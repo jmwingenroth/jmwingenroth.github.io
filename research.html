@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Research — Jordan M. Wingenroth</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,700;1,400&family=Inter:wght@300;400&display=swap');
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --sand: #f5f2ee;
+      --ink: #1c1c1c;
+      --muted: #6b6460;
+      --accent: #7a9e8e;
+      --rule: #ddd8d2;
+    }
+
+    html {
+      font-size: 17px;
+      background: var(--sand);
+      color: var(--ink);
+    }
+
+    body {
+      font-family: 'EB Garamond', Georgia, serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ── wavy top accent ── */
+    .wave-top {
+      width: 100%;
+      line-height: 0;
+    }
+    .wave-top svg {
+      display: block;
+      width: 100%;
+    }
+
+    /* ── main card ── */
+    .card {
+      width: min(720px, 92vw);
+      margin: 0 auto 80px;
+      padding: 40px 64px 64px;
+      background: #fff;
+      border-radius: 28px;
+      box-shadow: 0 4px 40px rgba(0,0,0,0.06);
+    }
+
+    /* ── nav tabs ── */
+    .page-nav {
+      display: flex;
+      background: var(--sand);
+      border-radius: 14px;
+      padding: 4px;
+      gap: 2px;
+      margin-bottom: 40px;
+      align-self: flex-start;
+    }
+
+    .nav-btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.74rem;
+      font-weight: 400;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 7px 20px;
+      border-radius: 10px;
+      transition: color 0.15s;
+      white-space: nowrap;
+    }
+
+    .nav-btn:hover {
+      color: var(--ink);
+    }
+
+    .nav-btn.active {
+      background: #fff;
+      color: var(--ink);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    /* ── divider ── */
+    .rule {
+      border: none;
+      border-top: 1px solid var(--rule);
+      margin: 0 0 36px;
+      border-radius: 1px;
+    }
+
+    /* ── publication section headings ── */
+    .pub-section-heading {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 1.35rem;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      color: var(--ink);
+      margin-bottom: 22px;
+    }
+
+    /* ── publication list ── */
+    .pub-section {
+      margin-bottom: 44px;
+    }
+
+    .pub-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .pub-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .pub-list li {
+      font-size: 0.95rem;
+      line-height: 1.65;
+      color: #333;
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .pub-list li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+    }
+
+    .pub-venue {
+      font-style: italic;
+    }
+
+    .pub-title {
+      font-style: italic;
+    }
+
+    /* ── footer ── */
+    footer {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 300;
+      color: var(--muted);
+      text-align: center;
+      padding-bottom: 40px;
+      letter-spacing: 0.04em;
+    }
+
+    @media (max-width: 540px) {
+      .card {
+        padding: 28px 28px 48px;
+        border-radius: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wave-top">
+    <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,0 L1440,0 L1440,30 Q1080,60 720,40 Q360,20 0,50 Z" fill="#7a9e8e" opacity="0.18"/>
+      <path d="M0,0 L1440,0 L1440,18 Q1080,42 720,26 Q360,10 0,36 Z" fill="#7a9e8e" opacity="0.10"/>
+    </svg>
+  </div>
+
+  <main class="card">
+
+    <nav class="page-nav">
+      <a href="index.html" class="nav-btn">About</a>
+      <a href="research.html" class="nav-btn active">Research</a>
+      <a href="docs/CV_2025-6.pdf" class="nav-btn" target="_blank" rel="noopener">CV</a>
+    </nav>
+
+    <hr class="rule">
+
+    <section class="pub-section">
+      <h2 class="pub-section-heading">Working Papers</h2>
+      <ul class="pub-list">
+        <li>
+          <strong>Wingenroth, J.M.</strong>, Prest, B., Rennels, L., Rennert, K., Errickson, F., and Anthoff, D.
+          Accounting for biodiversity loss raises the social cost of CO₂.
+          <span class="pub-venue">RFF Working Paper 24-23</span> (2024).
+        </li>
+      </ul>
+    </section>
+
+    <section class="pub-section">
+      <h2 class="pub-section-heading">Journal Articles</h2>
+      <ul class="pub-list">
+        <li>
+          Gorski, G., Larsen, L., <strong>Wingenroth, J.M.</strong>, Zhang, L., Bellugi, D., and Appling, A.
+          Stream nitrate dynamics driven primarily by discharge and watershed physical and soil characteristics at intensively monitored sites: Insights from deep learning.
+          <span class="pub-venue">Water Resources Research</span> (2024).
+        </li>
+        <li>
+          Rennert, K., Errickson, F., Prest, B., Rennels, L., Newell, R., Pizer, W., Kingdon, C., <strong>Wingenroth, J.M.</strong>, Cooke, R., Parthum, B., Smith, D., Cromar, K., Diaz, D., Moore, F., Müller, U., Plevin, R., Raftery, A., Ševcíková, H., Sheets, H., Stock, J., Tan, T., Watson, M., Wong, T., and Anthoff, D.
+          Comprehensive evidence implies a higher social cost of CO₂.
+          <span class="pub-venue">Nature</span> (2022).
+        </li>
+        <li>
+          <strong>Wingenroth, J.M.</strong>, Yee, C., Nghiem, J., and Larsen, L.
+          Effects of stem density and Reynolds number on fine sediment interception by emergent vegetation.
+          <span class="pub-venue">Geosciences</span> (2021).
+        </li>
+        <li>
+          Stein, S., <strong>Wingenroth, J.M.</strong>, and Larsen, L.
+          A functional form for fine sediment interception in vegetated environments.
+          <span class="pub-venue">Geosciences</span> (2021).
+        </li>
+      </ul>
+    </section>
+
+    <section class="pub-section">
+      <h2 class="pub-section-heading">Other Writing</h2>
+      <ul class="pub-list">
+        <li>
+          <span class="pub-title">Unpacking the Department of Energy's Report on US Liquefied Natural Gas Exports</span>
+          (2025), with Brian C. Prest and Alan Krupnick. Resources for the Future Issue Brief.
+        </li>
+        <li>
+          <span class="pub-title">Converting Forests to Solar Facilities: Causes, Potential, and Implications</span>
+          (2025), with David N. Wear and Ann Bartuska. Resources for the Future Report.
+        </li>
+        <li>
+          <span class="pub-title">Challenges and Opportunities for Incorporating Climate Change's Impacts on Ocean Systems into the Social Cost of Greenhouse Gases</span>
+          (2024), with Brian C. Prest and Frank Errickson. Resources for the Future Report.
+        </li>
+        <li>
+          <span class="pub-title">Increasing the Representation of Earth System Feedbacks in the Social Cost of Carbon Dioxide</span>
+          (2024), with David Anthoff, Brian C. Prest, Kevin Rennert, and Frank Errickson. Report prepared for the U.S. Environmental Protection Agency.
+        </li>
+        <li>
+          <span class="pub-title">Operational versus Capital Expenditure Risk in a Clean Energy Transition</span>
+          (2024), with Brian C. Prest. Resources for the Future Report.
+        </li>
+        <li>
+          <span class="pub-title">The Economic Benefits of Achieving the Paris Agreement Goals</span>
+          (2023), with Brian C. Prest and Kevin Rennert. Resources for the Future Issue Brief.
+        </li>
+        <li>
+          <span class="pub-title">Will Nations Meet the Paris Agreement's Emissions and Temperature Goals?</span>
+          (2023), with Brian C. Prest and Kevin Rennert. Resources for the Future Issue Brief.
+        </li>
+        <li>
+          <span class="pub-title">The Social Cost of Carbon: Reaching a New Estimate</span>
+          (2022), with Brian C. Prest and Kevin Rennert. Resources Magazine.
+        </li>
+        <li>
+          <span class="pub-title">Global Energy Outlook 2022: Turning Points and Tension in the Energy Transition</span>
+          (2022), with Daniel Raimi, Erin Campbell, Richard G. Newell, Brian C. Prest, and Seth Villanueva. Resources for the Future Report.
+        </li>
+        <li>
+          <span class="pub-title">Public Comment: Updated Estimates of the Social Cost of Methane for Usage in Regulatory Analysis</span>
+          (2022), with Brian C. Prest, Kevin Rennert, Richard G. Newell, William A. Pizer, David Anthoff, Frank Errickson, and Lisa Rennels.
+        </li>
+        <li>
+          <span class="pub-title">Working Toward a New Social Cost of Carbon</span>
+          (2021), with Kevin Rennert, Brian C. Prest, William A. Pizer, Richard G. Newell, David Anthoff, Cora Kingdon, Lisa Rennels, Roger Cooke, Adrian Raftery, Hana Ševcíková, and Frank Errickson. Resources Magazine.
+        </li>
+        <li>
+          <span class="pub-title">Final Report: Cumulative Risk Assessment of Local Produce Exposed to Urban Wildfire Smoke</span>
+          (2019), with Vanessa Raditz, Julia Van Soelen Kim, Mimi Enright, Rob Bennaton, and Suzi Grady. University of California Cooperative Extension Report.
+        </li>
+        <li>
+          <span class="pub-title">The Effects of River Drydown and Pool Isolation on Terrestrial Vertebrates in an Intermittent River</span>
+          (2019). Master's thesis.
+        </li>
+      </ul>
+    </section>
+
+  </main>
+
+  <footer>Created with Claude</footer>
+
+</body>
+</html>

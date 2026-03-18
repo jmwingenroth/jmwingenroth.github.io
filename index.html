@@ -51,10 +51,53 @@
     .card {
       width: min(720px, 92vw);
       margin: 0 auto 80px;
-      padding: 56px 64px 64px;
+      padding: 40px 64px 64px;
       background: #fff;
       border-radius: 28px;
       box-shadow: 0 4px 40px rgba(0,0,0,0.06);
+    }
+
+    /* ── nav tabs ── */
+    .page-nav {
+      display: flex;
+      background: var(--sand);
+      border-radius: 14px;
+      padding: 4px;
+      gap: 2px;
+      margin-bottom: 40px;
+      align-self: flex-start;
+    }
+
+    .nav-btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.74rem;
+      font-weight: 400;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 7px 20px;
+      border-radius: 10px;
+      transition: color 0.15s;
+      white-space: nowrap;
+    }
+
+    .nav-btn:hover {
+      color: var(--ink);
+    }
+
+    .nav-btn.active {
+      background: #fff;
+      color: var(--ink);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    /* ── divider ── */
+    .rule {
+      border: none;
+      border-top: 1px solid var(--rule);
+      margin: 0 0 36px;
+      border-radius: 1px;
     }
 
     /* ── hero ── */
@@ -140,21 +183,11 @@
       height: 16px;
       width: auto;
       display: block;
-      /* white → #6b6460: brightness(0) gives black; opacity(0.58) composites to ~#6b on white bg */
       filter: brightness(0) opacity(0.58);
       transition: filter 0.15s;
     }
     .icon-links a:hover .emlab-logo {
-      /* white → #7a9e8e: invert to mid-grey, sepia for warmth, hue-rotate to green, tune sat/brightness */
       filter: invert(50%) sepia(1) hue-rotate(123deg) saturate(0.8) brightness(0.85);
-    }
-
-    /* ── divider ── */
-    .rule {
-      border: none;
-      border-top: 1px solid var(--rule);
-      margin: 0 0 36px;
-      border-radius: 1px;
     }
 
     /* ── bio ── */
@@ -162,83 +195,6 @@
       font-size: 1.05rem;
       line-height: 1.75;
       color: #333;
-      margin-bottom: 44px;
-    }
-
-    /* ── section ── */
-    .section {
-      margin-bottom: 38px;
-    }
-
-    .section-label {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.72rem;
-      font-weight: 400;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 16px;
-    }
-
-    /* ── position list ── */
-    .pos-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .pos-list li {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 16px;
-    }
-
-    .pos-title {
-      font-size: 0.98rem;
-      line-height: 1.4;
-    }
-
-    .pos-org {
-      font-style: italic;
-      color: var(--muted);
-    }
-
-    .pos-year {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.75rem;
-      font-weight: 300;
-      color: var(--muted);
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    /* ── selected publications ── */
-    .pub-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .pub-list li {
-      font-size: 0.93rem;
-      line-height: 1.6;
-      color: #333;
-      padding-left: 18px;
-      position: relative;
-    }
-
-    .pub-list li::before {
-      content: '—';
-      position: absolute;
-      left: 0;
-      color: var(--accent);
-    }
-
-    .pub-venue {
-      font-style: italic;
     }
 
     /* ── footer ── */
@@ -254,7 +210,7 @@
 
     @media (max-width: 540px) {
       .card {
-        padding: 36px 28px 48px;
+        padding: 28px 28px 48px;
         border-radius: 20px;
       }
       .hero {
@@ -283,6 +239,14 @@
 
   <main class="card">
 
+    <nav class="page-nav">
+      <a href="index.html" class="nav-btn active">About</a>
+      <a href="research.html" class="nav-btn">Research</a>
+      <a href="docs/CV_2025-6.pdf" class="nav-btn" target="_blank" rel="noopener">CV</a>
+    </nav>
+
+    <hr class="rule">
+
     <div class="hero">
       <div class="headshot-wrap">
         <div class="headshot" role="img" aria-label="Jordan M. Wingenroth"></div>
@@ -299,13 +263,11 @@
             <img src="photos/emlab-logo.png" alt="emLab" class="emlab-logo">
           </a>
           <a href="https://github.com/jmwingenroth" target="_blank" rel="noopener" title="GitHub">
-            <!-- github mark icon -->
             <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
               <path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836a9.59 9.59 0 012.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
             </svg>
           </a>
           <a href="mailto:jmwingenroth@ucsb.edu" title="Email">
-            <!-- envelope icon -->
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
               <rect x="2" y="4" width="20" height="16" rx="2"/>
               <polyline points="2,4 12,13 22,4"/>
@@ -320,59 +282,6 @@
     <p class="bio">
       I study the economics of climate change, with a focus on quantifying the social costs of greenhouse gas emissions and incorporating biodiversity and ecosystem feedbacks into integrated assessment models. My work bridges environmental science and policy, drawing on statistical modeling, geospatial analysis, and reproducible research practices.
     </p>
-
-    <section class="section">
-      <p class="section-label">Position</p>
-      <ul class="pos-list">
-        <li>
-          <span class="pos-title">Associate Specialist — <span class="pos-org">emLab, UC Santa Barbara</span></span>
-          <span class="pos-year">2025 – Present</span>
-        </li>
-        <li>
-          <span class="pos-title">Research Associate — <span class="pos-org">Resources for the Future</span></span>
-          <span class="pos-year">2021 – 2025</span>
-        </li>
-      </ul>
-    </section>
-
-    <section class="section">
-      <p class="section-label">Education</p>
-      <ul class="pos-list">
-        <li>
-          <span class="pos-title">M.S. Environmental Science, Policy, and Management — <span class="pos-org">UC Berkeley</span></span>
-          <span class="pos-year">2019</span>
-        </li>
-        <li>
-          <span class="pos-title">B.S. Environmental Science — <span class="pos-org">Northeastern University</span></span>
-          <span class="pos-year">2016</span>
-        </li>
-      </ul>
-    </section>
-
-    <section class="section">
-      <p class="section-label">Selected Publications</p>
-      <ul class="pub-list">
-        <li>
-          <strong>Wingenroth, J.M.</strong> et al. Accounting for biodiversity loss raises the social cost of CO₂.
-          <span class="pub-venue">RFF Working Paper 24-23</span> (2024).
-        </li>
-        <li>
-          Rennert, K., Errickson, F., Prest, B., … <strong>Wingenroth, J.M.</strong> et al.
-          Comprehensive evidence implies a higher social cost of CO₂.
-          <span class="pub-venue">Nature</span> (2022).
-        </li>
-        <li>
-          <strong>Wingenroth, J.M.</strong>, Yee, C., Nghiem, J., and Larsen, L.
-          Effects of stem density and Reynolds number on fine sediment interception by emergent vegetation.
-          <span class="pub-venue">Geosciences</span> (2021).
-        </li>
-        <li>
-          Gorski, G., Larsen, L., <strong>Wingenroth, J.M.</strong> et al.
-          Stream nitrate dynamics driven primarily by discharge and watershed characteristics.
-          <span class="pub-venue">Water Resources Research</span> (2024).
-        </li>
-      </ul>
-    </section>
 
   </main>
 
