@@ -1,0 +1,244 @@
+%-------------------------------------
+% Resum in LaTeX (XeLaTeX)
+% Author:  HF Yuan
+% Project: https://github.com/xyz-yuanhf/yuan-resume
+% Base on: https://github.com/mattyHerzig/mattys_resume
+%          http://www.jianxu.net/en/
+% License: MIT
+%------------------------------------
+
+\documentclass[a4paper, 10pt]{article}
+\usepackage{myresume}  % Style package
+
+% --------------------  START  --------------------
+\begin{document}
+
+% -------------------- HEADING --------------------
+\begin{flushright}
+  \setstretch{0.6}
+  \item {\Calluna \large (239) 849-3443}  % Phone number
+  \item {\Calluna \large jmwingenroth@ucsb.edu}  % E-mail address
+  \item {\Calluna \large Santa Barbara, CA}  % Home page
+\end{flushright}\vspace{-42pt}
+
+\begin{flushleft}  % Rplace here with your name (and identity if required)
+  {\Calluna \fontsize{30pt}{30pt}\selectfont \textsc{Jordan M. Wingenroth}}
+ \noindent\rule{\textwidth}{0.4pt}
+\end{flushleft}
+
+% -------------------- Focus Areas --------------------
+
+% \sectionBlock{
+% \section{Subjects}
+% }{
+% \skillListStart
+% \justifying
+% \item Climate Economics $\diamond$ Ecological Economics $\diamond$ Environmental Science
+% \skillListEnd
+% }
+% \vspace{-15pt}
+% -------------------- POSITIONS --------------------
+\sectionBlock{
+\section{Current Position}
+}{
+\posHeading
+  {Associate Specialist \normalfont | University of California, Santa Barbara}{2025 – 2026*}
+  {*One-year pre-doctoral fellowship at emLab}{}
+}
+
+\sectionBlock{
+\section{Previous Positions}
+}{
+\posHeading
+  {Research Associate \normalfont | Resources for the Future, Washington, DC}{2021 – 2025}
+  {}{}
+
+\posHeading
+  {Laboratory Manager \normalfont | University of California, Berkeley}{2018 – 2021}
+  {}{}
+
+\posHeading
+  {Graduate Student Researcher \normalfont | University of California, Berkeley}{2016 – 2018}
+  {}{}
+
+\posHeading
+  {Research Assistant \normalfont | Woods Hole Oceanographic Institution}{2015}
+  {}{}
+
+\posHeading
+  {Research Assistant \normalfont | University of California, Santa Cruz}{2014}
+  {}{}
+
+}
+
+% -------------------- EDUCATION --------------------
+\sectionBlock{
+\section{Education}
+}{
+\eduHeading
+  {University of California, Berkeley}{}
+  {M.S. in Environmental Science, Policy, and Management}{2019}
+
+\eduHeading
+  {Northeastern University, Boston, MA}{}
+  {B.S. in Environmental Science, Minor in Physics}{2016}
+
+}
+
+% -------------------- Working Papers --------------------
+\sectionBlock{
+\section{Working Papers}
+}{
+\owListStart
+\justifying
+\item[] \textbf{Wingenroth, J.M.}, Prest, B., Rennels, L., Rennert, K., Errickson, F., and Anthoff, D. Accounting for biodiversity loss raises the social cost of CO$_2$. RFF Working Paper 24-23 (2024).
+
+\owListEnd
+}
+
+% -------------------- PUBLICATIONS --------------------
+\sectionBlock{
+\section{Journal Articles}
+}{
+\pubListStart
+\justifying
+\item Gorski, G., Larsen, L., \textbf{Wingenroth, J.M.}, Zhang, L., Bellugi, D., and Appling, A. Stream nitrate dynamics driven primarily by discharge and watershed physical and soil characteristics at intensively monitored sites: Insights from deep learning. \textit{Water Resources Research} (2024).
+
+\item Rennert, K., Errickson, F., Prest, B., Rennels, L., Newell, R., Pizer, W., Kingdon, C., \textbf{Wingenroth, J.M.} Cooke, R., Parthum, B., Smith, D., Cromar, K., Diaz, D., Moore, F., M{\"u}ller, U., Plevin, R., Raftery, A., Ševcíková, H., Sheets. H., Stock, J., Tan, T., Watson, M., Wong, T., and Anthoff, D. Comprehensive evidence implies a higher social cost of CO$_2$. \textit{Nature} (2022).
+
+\item \textbf{Wingenroth, J.M.}, Yee, C., Nghiem, J., and Larsen, L. Effects of stem density and Reynolds number on fine sediment interception by emergent vegetation. \textit{Geosciences} (2021).
+
+\item Stein, S., \textbf{Wingenroth, J.M.}, and Larsen, L. A functional form for fine sediment interception in vegetated environments. \textit{Geosciences} (2021).
+\pubListEnd
+}
+
+% -------------------- Other Writing --------------------
+\sectionBlock{
+\section{Other Publications}
+}{
+\owListStart
+\justifying
+\item[] \textit{Unpacking the Department of Energy’s Report on US Liquefied Natural Gas Exports} (2025), with Brian C. Prest and Alan Krupnick. Resources for the Future Issue Brief.
+
+\item[] \textit{Converting Forests to Solar Facilities: Causes, Potential, and Implications} (2025), with David N. Wear and Ann Bartuska. Resources for the Future Report.
+
+\item[] \textit{Challenges and Opportunities for Incorporating Climate Change’s Impacts on Ocean Systems into the Social Cost of Greenhouse Gases} (2024), with Brian C. Prest and Frank Errickson. Resources for the Future Report.
+
+\owListEnd
+}
+
+\sectionBlock{
+\section{}
+}{
+\owListStart
+\justifying
+
+\item[] \textit{Increasing the Representation of Earth System Feedbacks in the Social Cost of Carbon Dioxide} (2024), with David Anthoff, Brian C. Prest, Kevin Rennert, and Frank Errickson. Report prepared for the U.S. Environmental Protection Agency.
+
+\item[] \textit{Operational versus Capital Expenditure Risk in a Clean Energy Transition} (2024), with Brian C. Prest. Resources for the Future Report.
+
+\item[] \textit{The Economic Benefits of Achieving the Paris Agreement Goals} (2023), with Brian C. Prest and Kevin Rennert. Resources for the Future Issue Brief.
+
+\item[] \textit{Will Nations Meet the Paris Agreement's Emissions and Temperature Goals?} (2023), with Brian C. Prest and Kevin Rennert. Resources for the Future Issue Brief.
+
+\item[] \textit{The Social Cost of Carbon: Reaching a New Estimate} (2022), with Brian C. Prest and Kevin Rennert. Resources Magazine.
+
+\item[] \textit{Global Energy Outlook 2022: Turning Points and Tension in the Energy Transition} (2022), with Daniel Raimi, Erin Campbell, Richard G. Newell, Brian C. Prest, and Seth Villanueva. Resources for the Future Report.
+
+\item[] \textit{Public Comment: Updated Estimates of the Social Cost of Methane for Usage in Regulatory Analysis} (2022), with Brian C. Prest, Kevin Rennert, Richard G. Newell, William A. Pizer, David Anthoff, Frank Errickson, and Lisa Rennels.
+
+\item[] \textit{Working Toward a New Social Cost of Carbon} (2021), with Kevin Rennert, Brian C. Prest, William A. Pizer, Richard G. Newell, David Anthoff, Cora Kingdon, Lisa Rennels, Roger Cooke, Adrian Raftery, Hana Ševcíková, and Frank Errickson. Resources Magazine.
+
+\item[] \textit{Final Report: Cumulative Risk Assessment of Local Produce Exposed to Urban Wildfire Smoke} (2019), with Vanessa Raditz, Julia Van Soelen Kim, Mimi Enright, Rob Bennaton, and Suzi Grady. University of California Cooperative Extension Report.
+
+\item[] \textit{The Effects of River Drydown and Pool Isolation on Terrestrial Vertebrates in an Intermittent River} (2019). Master's thesis.
+
+\owListEnd
+}
+
+% -------------------- Teaching --------------------
+\sectionBlock{
+\section{Teaching}
+}{
+\owListStart
+\justifying
+\item[] Guest lecturer, \textit{Comprehensive Evidence Implies a Higher Social Cost of CO$_2$}. School of Public Affairs, PUAD 685: Topics in Policy Analysis and Management. American University (Fall 2023).
+
+\item[] Graduate student instructor, Department of Environmental Science, Policy, and Management, ESPM115C: Fish Ecology. University of California, Berkeley (Spring 2017, Spring 2018).
+
+\owListEnd
+}
+
+% -------------------- Presentations --------------------
+\sectionBlock{
+\section{Presentations}
+}{
+\owListStart
+\justifying
+\item[] \textbf{2020:} American Geophysical Union Fall Meeting
+\item[] \textbf{2019:} American Geophysical Union Fall Meeting
+\item[] \textbf{2017:} Annual Meeting of the American Fisheries Society
+
+\owListEnd
+}
+
+% -------------------- AWARDS & HONORS --------------------
+\sectionBlock{
+\section{Honors \& Awards}
+}{
+\owListStart
+\justifying
+\item[] \textbf{Oliver B. Lyman Wildlife and Fisheries Award} \hfill 2017 \\ University of California, Berkeley
+\item[] \textbf{California-Nevada Chapter Travel Award} \hfill 2017 \\ American Fisheries Society
+\item[] \textbf{National Merit Scholarship} (undergraduate tuition) \hfill 2011 – 2016 \\ Northeastern University
+\owListEnd
+}
+
+% -------------------- Proficiencies --------------------
+\sectionBlock{
+\section{Proficiencies}
+}{
+\owListStart
+\justifying
+\item[] \textbf{Advanced:} Statistical programming, data wrangling and visualization, geospatial data analysis, version control and reproducibility, R, tidyverse, Julia, Jupyter notebooks, QGIS, ArcGIS, \LaTeX, Git, GitHub (https://github.com/jmwingenroth)
+
+\item[] \textbf{Intermediate:} Machine learning, numerical computing, cloud computing, relational databases, shell scripting, remote sensing, AWS, Stata, Python, Keras, MATLAB, SQL
+
+\item[] \textbf{Novice:} Model Context Protocol
+\owListEnd
+}
+
+% -------------------- Other Experience --------------------
+\sectionBlock{
+\section{Other Affiliations \& Experience}
+}{
+\owListStart
+\justifying
+\item[] \textbf{Member}, Artificial Intelligence Task Force \hfill 2025 - Current \\ emLab at the University of California, Santa Barbara
+\item[] \textbf{Member} \hfill 2025 – Current \\ American Economic Association
+\item[] \textbf{Chair}, Artificial Intelligence Working Group \hfill 2025 \\ Resources for the Future
+\item[] \textbf{Member}, Data Governance Working Group \hfill 2023 – 2025 \\ Resources for the Future
+\item[] \textbf{Consultant}, Brookings Papers on Economic Activity project \hfill 2021 \\ Resources for the Future
+\item[] \textbf{Consultant}, Innovation Center, educational games\hfill 2018 – 2019 \\ Southern New Hampshire University
+\item[] \textbf{Consultant}, Citizen Science Initiative, Produce Safety after Urban Wildfire\hfill 2017 – 2019 \\ University of California Cooperative Extension, Sonoma County
+\item[] \textbf{Member} \hfill 2017 – 2018 \\ American Fisheries Society, California-Nevada Chapter
+\item[] \textbf{Scientist}, HOT Cruise 278 \& SCOPE-ALOHA Cruise S2-A\hfill 2015 \\ University of Hawai'i; RV \textit{Kilo Moana}; Station ALOHA
+
+\owListEnd
+}
+
+% -------------------- Mentorship --------------------
+\sectionBlock{
+\section{Mentorship}
+}{
+\owListStart
+\justifying
+\item[] RFF summer interns: Kosisochuku Onwuamaegbu, Carolina Estevez Loza
+\item[] UC Berkeley research assistants: Candace Yee, Justin Nghiem, Yayla Sezginer, Elle Chen, Nicole Ulakovic, Katrina Ginsberg, Danielle Satin, Sylvia Targ, Carol Tsai, Michael Bui, Ben Pridonoff, Elizabeth Fan, Karen Phan, Sally Dowd, Nancy Rose, Travis Lange, Sean Chang
+
+\owListEnd
+}
+
+
+
+\end{document}
