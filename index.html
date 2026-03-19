@@ -23,7 +23,10 @@
 
     html {
       font-size: 17px;
-      background: var(--sand);
+      background:
+        radial-gradient(ellipse 70% 60% at 8% 8%, #c6e0d4 0%, transparent 65%),
+        radial-gradient(ellipse 55% 65% at 92% 88%, #cac3e6 0%, transparent 60%),
+        #ece8e1;
       color: var(--ink);
     }
 
@@ -60,12 +63,12 @@
     /* ── nav tabs ── */
     .page-nav {
       display: flex;
-      background: var(--accent);
+      background: transparent;
       border-radius: 14px;
       padding: 4px;
       gap: 2px;
-      margin-bottom: 40px;
-      align-self: flex-start;
+      width: min(720px, 92vw);
+      margin-bottom: 12px;
     }
 
     .nav-btn {
@@ -250,13 +253,13 @@
     </svg>
   </div>
 
-  <main class="card">
+  <nav class="page-nav">
+    <a href="index.html" class="nav-btn active">About</a>
+    <a href="research.html" class="nav-btn">Research</a>
+    <a href="docs/CV_2026.pdf" class="nav-btn" target="_blank" rel="noopener">CV</a>
+  </nav>
 
-    <nav class="page-nav">
-      <a href="index.html" class="nav-btn active">About</a>
-      <a href="research.html" class="nav-btn">Research</a>
-      <a href="docs/CV_2026.pdf" class="nav-btn" target="_blank" rel="noopener">CV</a>
-    </nav>
+  <main class="card">
 
     <hr class="rule">
 
