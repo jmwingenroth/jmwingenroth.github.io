@@ -23,12 +23,7 @@
 
     html {
       font-size: 17px;
-      background:
-        linear-gradient(to bottom, #ece8e1 0%, transparent 14%, transparent 86%, #ece8e1 100%),
-        linear-gradient(to right,  #ece8e1 0%, transparent 14%, transparent 86%, #ece8e1 100%),
-        radial-gradient(ellipse 68% 56% at 30% 30%, #c0ddd0 0%, transparent 100%),
-        radial-gradient(ellipse 62% 68% at 70% 70%, #c8c1e8 0%, transparent 100%),
-        #ece8e1;
+      background: var(--sand);
       color: var(--ink);
     }
 
@@ -163,12 +158,12 @@
     .icon-links a {
       display: flex;
       align-items: center;
-      color: var(--muted);
+      color: var(--accent);
       text-decoration: none;
-      transition: color 0.15s;
+      transition: opacity 0.15s;
     }
     .icon-links a:hover {
-      color: var(--accent);
+      opacity: 0.6;
     }
     .icon-links svg {
       width: 20px;
@@ -178,10 +173,6 @@
       height: 16px;
       width: auto;
       display: block;
-      filter: brightness(0) opacity(0.58);
-      transition: filter 0.15s;
-    }
-    .icon-links a:hover .emlab-logo {
       filter: invert(50%) sepia(1) hue-rotate(123deg) saturate(0.8) brightness(0.85);
     }
 
