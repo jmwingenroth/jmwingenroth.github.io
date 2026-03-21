@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@300;400&display=swap');
+
+  @page {
+    size: 3.5in 2in;
+    margin: 0;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    width: 3.5in;
+    height: 2in;
+    padding: 0;
+    background: white;
+    color: #1c1c1c;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .content {
+    position: absolute;
+    top: 0.22in;
+    left: 0;
+    right: 0;
+    padding-left: 0.28in;
+    padding-right: 0.28in;
+  }
+
+  .name {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 22pt;
+    font-weight: 500;
+    color: #1c1c1c;
+    letter-spacing: 0.01em;
+    line-height: 1.1;
+    margin-bottom: 5.9pt;
+  }
+
+  .title {
+    font-family: 'Inter', sans-serif;
+    font-size: 9pt;
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #6b6460;
+    margin-bottom: 2.3pt;
+  }
+
+  .affiliation {
+    font-family: 'Inter', sans-serif;
+    font-size: 7.5pt;
+    font-weight: 300;
+    letter-spacing: 0.03em;
+    color: #6b6460;
+    margin-bottom: 8.25pt;
+  }
+
+  .contact-footer {
+    position: absolute;
+    bottom: 0.18in;
+    left: 0.28in;
+    right: 0.28in;
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 8pt;
+    font-weight: 400;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 4pt;
+  }
+
+  .contact-item svg {
+    flex-shrink: 0;
+  }
+
+
+</style>
+</head>
+<body>
+  <div class="content">
+    <div class="name">Jordan Wingenroth</div>
+    <div class="title">Data Scientist</div>
+    <div class="affiliation">emLab @ University of California, Santa Barbara</div>
+  </div>
+
+  <div class="contact-footer">
+    <span class="contact-item">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#9e4d72" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="4" width="20" height="16" rx="2"/>
+        <polyline points="2,4 12,13 22,4"/>
+      </svg>
+      jmwingenroth@ucsb.edu
+    </span>
+    <span class="contact-item">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#7a9e8e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="2" y1="12" x2="22" y2="12"/>
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+      </svg>
+      jmwingenroth.github.io
+    </span>
+  </div>
+
+</body>
+</html>
