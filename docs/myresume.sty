@@ -39,8 +39,6 @@
     Extension = .ttf,
     UprightFont=*-Regular
     ]
-% Emph style
-\renewcommand{\emph}[1]{\textbf{\fontsize{11pt}{11pt}\selectfont #1}}
 % Section block (allows breaks between sections)
 \newcommand{\sectionBlock}[2]{%
     \needspace{4\baselineskip}% Prevents orphaned sections
@@ -65,16 +63,16 @@
 % Section content
 % Publication list with hanging numbers
 \newcommand{\pubListStart}{\begin{etaremune}[leftmargin=1.04em, labelwidth=2.5em, labelsep=0.5em, itemsep=3pt]}
-\newcommand{\pubListEnd}{\end{etaremune}\vspace{-11pt}}
+\newcommand{\pubListEnd}{\end{etaremune}\vspace{-14pt}}
 % Other writing list
 \newcommand{\owListStart}{\begin{itemize}[left=0pt, itemsep=3pt]}
-\newcommand{\owListEnd}{\end{itemize}\vspace{-11pt}}
+\newcommand{\owListEnd}{\end{itemize}\vspace{-14pt}}
 % Award list
 \newcommand{\awardListStart}{\begin{itemize}[left=0pt, itemsep=0pt]}
-\newcommand{\awardListEnd}{\end{itemize}\vspace{-11pt}}
+\newcommand{\awardListEnd}{\end{itemize}\vspace{-14pt}}
 % Skill list
 \newcommand{\skillListStart}{\begin{itemize}[left=0pt, label={}, itemsep=0pt]}
-\newcommand{\skillListEnd}{\end{itemize}\vspace{-11pt}}
+\newcommand{\skillListEnd}{\end{itemize}\vspace{-14pt}}
 % Item list
 \newcommand{\itemListStart}{\begin{itemize}[itemsep=0pt]}
 \newcommand{\itemListEnd}{\end{itemize}}
@@ -84,37 +82,8 @@
   }
 }
 % Positions information
-\newcommand{\posHeading}[4]{
-  \renewcommand{\arraystretch}{1.2}
-  {\parindent=0pt\hspace*{0.4em}\begin{tabular}[t]{p{13.5cm}}
-      \emph{#1} \hfill #2 \\
-      \textit{#3} \hfill #4 \\
-    \end{tabular}}\vspace{-14pt}
-}
-
-% Plain position heading (document body font size, no \emph enlargement)
-\newcommand{\posHeadingPlain}[4]{
-  \renewcommand{\arraystretch}{1.2}
+\newcommand{\posHeading}[4]{%
   {\parindent=0pt\hspace*{0.4em}\begin{tabular}[t]{p{13.5cm}}
       #1 \hfill #2 \\
-      #3 \hfill #4 \\
-    \end{tabular}}\vspace{-14pt}
-}
-
-% Education information
-\newcommand{\eduHeading}[4]{
-  \renewcommand{\arraystretch}{1.2}
-  {\parindent=0pt\hspace*{0.4em}\begin{tabular}[t]{p{13.5cm}}
-      \emph{#1} \hfill #2 \\
-      \textit{#3} \hfill #4 \\
-    \end{tabular}}
-}
-
-% Experience entry with wrapping title, right-aligned date, and sub-line
-\newcommand{\expHeading}[3]{%
-  \renewcommand{\arraystretch}{1.2}%
-  \begin{tabularx}{\linewidth}[t]{@{}X@{\hspace{1em}}r@{}}
-    #1 & #2 \\
-    \multicolumn{2}{@{}l@{}}{#3}
-  \end{tabularx}%
+    \end{tabular}}\vspace{-8pt}
 }
