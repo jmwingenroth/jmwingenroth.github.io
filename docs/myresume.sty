@@ -20,26 +20,23 @@
 \usepackage{etaremune}
 % Font style
 \usepackage{fontspec}
-\setmainfont{SabonLTStd}[
-    Path=./Fonts/Sabon/,
+\setmainfont{EBGaramond}[
+    Path=./Fonts/EBGaramond/,
     Extension = .ttf,
     UprightFont=*-Regular,
     BoldFont=*-Bold,
     ItalicFont=*-Italic,
     BoldItalicFont=*-BoldItalic
     ]
-\newfontfamily\Calluna{Calluna}[
-    Path=./Fonts/Calluna/,
-    Extension = .otf,
-    UprightFont=*-Regular
-    ]
-\newfontfamily\Courier{CourierNew}[
-    Path=./Fonts/Courier/,
+% Name header font (weight 500 to match website h1)
+\newfontfamily\Calluna{EBGaramond}[
+    Path=./Fonts/EBGaramond/,
     Extension = .ttf,
-    UprightFont=*-Regular
+    UprightFont=*-Medium
     ]
-\newfontfamily\CronosLt{CronosProLT}[
-    Path=./Fonts/Cronos/,
+% Sans-serif UI/heading font (matches website Inter)
+\newfontfamily\CronosLt{Inter}[
+    Path=./Fonts/Inter/,
     Extension = .ttf,
     UprightFont=*-Regular
     ]
@@ -63,9 +60,10 @@
 % Section title
 \titleformat{\section}{
   \setstretch{1.0}
-  \CronosLt\scshape\raggedright
-  \fontsize{14.5pt}{14.5pt}\selectfont 
-}{}{0em}{}
+  \CronosLt\raggedright
+  \fontsize{9.5pt}{12pt}\selectfont
+  \addfontfeature{LetterSpace=8.0}
+}{}{0em}{\MakeUppercase}
 % Section content
 % Publication list with hanging numbers
 \newcommand{\pubListStart}{\begin{etaremune}[leftmargin=1.04em, labelwidth=2.5em, labelsep=0.5em, itemsep=3pt]}
