@@ -96,6 +96,15 @@
     \end{tabular}}\vspace{-14pt}
 }
 
+% Plain position heading (document body font size, no \emph enlargement)
+\newcommand{\posHeadingPlain}[4]{
+  \renewcommand{\arraystretch}{1.2}
+  {\parindent=0pt\hspace*{0.4em}\begin{tabular}[t]{p{13.5cm}}
+      #1 \hfill #2 \\
+      #3 \hfill #4 \\
+    \end{tabular}}\vspace{-14pt}
+}
+
 % Education information
 \newcommand{\eduHeading}[4]{
   \renewcommand{\arraystretch}{1.2}
