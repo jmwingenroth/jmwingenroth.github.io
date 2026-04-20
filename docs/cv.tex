@@ -1,3 +1,4 @@
+% !TEX program = xelatex
 %-------------------------------------
 % Resum in LaTeX (XeLaTeX)
 % Author:  HF Yuan
@@ -14,17 +15,11 @@
 \begin{document}
 
 % -------------------- HEADING --------------------
-\begin{flushright}
-  \setstretch{0.6}
-  \item {\Calluna \large (239) 849-3443}  % Phone number
-  \item {\Calluna \large jmwingenroth@ucsb.edu}  % E-mail address
-  \item {\Calluna \large Santa Barbara, CA}  % Home page
-\end{flushright}\vspace{-42pt}
-
-\begin{flushleft}  % Rplace here with your name (and identity if required)
-  {\Calluna \fontsize{30pt}{30pt}\selectfont \textsc{Jordan M. Wingenroth}}
- \noindent\rule{\textwidth}{0.4pt}
-\end{flushleft}
+\begin{center}
+  {\Calluna\fontsize{40pt}{40pt}\selectfont\textsc{Jordan Wingenroth}}
+\end{center}\vspace{-4pt}
+\noindent\makebox[\textwidth]{\Calluna\large jmwingenroth@ucsb.edu \hfill $\diamond$ \hfill (239) 849-3443 \hfill $\diamond$ \hfill jmwingenroth.github.io \hfill $\diamond$ \hfill Santa Barbara, CA}\\[6pt]
+\noindent\rule{\textwidth}{0.4pt}\vspace{10pt}
 
 % -------------------- Focus Areas --------------------
 
@@ -141,6 +136,8 @@
 
 \item[] \textit{Will Nations Meet the Paris Agreement's Emissions and Temperature Goals?} (2023), with Brian C. Prest and Kevin Rennert. Resources for the Future Issue Brief.
 
+\item[] \textit{Downscaling U.S. Population, Demographic, and Economic Growth Projections: Methodology Review and Recommendations} (2023), with Jasmina Buresch, Jason Jones, Matthew Hauer, Adrian E. Raftery, Kevin Rennert, Hana Sevcikova, and David Wear. Report prepared for the U.S. Environmental Protection Agency.
+
 \item[] \textit{The Social Cost of Carbon: Reaching a New Estimate} (2022), with Brian C. Prest and Kevin Rennert. Resources Magazine.
 
 \item[] \textit{Global Energy Outlook 2022: Turning Points and Tension in the Energy Transition} (2022), with Daniel Raimi, Erin Campbell, Richard G. Newell, Brian C. Prest, and Seth Villanueva. Resources for the Future Report.
@@ -188,9 +185,9 @@
 }{
 \owListStart
 \justifying
-\item[] \textbf{Oliver B. Lyman Wildlife and Fisheries Award} \hfill 2017 \\ University of California, Berkeley
-\item[] \textbf{California-Nevada Chapter Travel Award} \hfill 2017 \\ American Fisheries Society
-\item[] \textbf{National Merit Scholarship} (undergraduate tuition) \hfill 2011 – 2016 \\ Northeastern University
+\item[] \expHeading{\textbf{Oliver B. Lyman Wildlife and Fisheries Award}}{2017}{University of California, Berkeley}
+\item[] \expHeading{\textbf{California-Nevada Chapter Travel Award}}{2017}{American Fisheries Society}
+\item[] \expHeading{\textbf{National Merit Scholarship}}{2011 – 2016}{Northeastern University}
 \owListEnd
 }
 
@@ -200,7 +197,7 @@
 }{
 \owListStart
 \justifying
-\item[] \textbf{Advanced:} Statistical programming, data wrangling and visualization, geospatial data analysis, version control and reproducibility, R, tidyverse, Julia, Jupyter notebooks, QGIS, ArcGIS, \LaTeX, Git, GitHub (https://github.com/jmwingenroth)
+\item[] \textbf{Advanced:} Statistical programming, data wrangling and visualization, geospatial data analysis, version control and reproducibility, R, tidyverse, Julia, Jupyter notebooks, QGIS, ArcGIS, \LaTeX, Git, GitHub
 
 \item[] \textbf{Intermediate:} Machine learning, numerical computing, cloud computing, relational databases, shell scripting, remote sensing, AWS, Stata, Python, Keras, MATLAB, SQL
 
@@ -214,15 +211,15 @@
 }{
 \owListStart
 \justifying
-\item[] \textbf{Member}, Artificial Intelligence Task Force \hfill 2025 - Current \\ emLab at the University of California, Santa Barbara
-\item[] \textbf{Member} \hfill 2025 – Current \\ American Economic Association
-\item[] \textbf{Chair}, Artificial Intelligence Working Group \hfill 2025 \\ Resources for the Future
-\item[] \textbf{Member}, Data Governance Working Group \hfill 2023 – 2025 \\ Resources for the Future
-\item[] \textbf{Consultant}, Brookings Papers on Economic Activity project \hfill 2021 \\ Resources for the Future
-\item[] \textbf{Consultant}, Innovation Center, educational games\hfill 2018 – 2019 \\ Southern New Hampshire University
-\item[] \textbf{Consultant}, Citizen Science Initiative, Produce Safety after Urban Wildfire\hfill 2017 – 2019 \\ University of California Cooperative Extension, Sonoma County
-\item[] \textbf{Member} \hfill 2017 – 2018 \\ American Fisheries Society, California-Nevada Chapter
-\item[] \textbf{Scientist}, HOT Cruise 278 \& SCOPE-ALOHA Cruise S2-A\hfill 2015 \\ University of Hawai'i; RV \textit{Kilo Moana}; Station ALOHA
+\item[] \expHeading{\textbf{Member}, Artificial Intelligence Task Force}{2025 – Current}{emLab at the University of California, Santa Barbara}
+\item[] \expHeading{\textbf{Member}}{2025 – Current}{American Economic Association}
+\item[] \expHeading{\textbf{Chair}, Artificial Intelligence Working Group}{2025}{Resources for the Future}
+\item[] \expHeading{\textbf{Member}, Data Governance Working Group}{2023 – 2025}{Resources for the Future}
+\item[] \expHeading{\textbf{Consultant}, Brookings Papers on Economic Activity project}{2021}{Resources for the Future}
+\item[] \expHeading{\textbf{Consultant}, Innovation Center, educational games}{2018 – 2019}{Southern New Hampshire University}
+\item[] \expHeading{\textbf{Consultant}, Citizen Science Initiative, Produce Safety after Urban Wildfire}{2017 – 2019}{University of California Cooperative Extension, Sonoma County}
+\item[] \expHeading{\textbf{Member}}{2017 – 2018}{American Fisheries Society, California-Nevada Chapter}
+\item[] \expHeading{\textbf{Scientist}, HOT Cruise 278 \& SCOPE-ALOHA Cruise S2-A}{2015}{University of Hawai'i; RV \textit{Kilo Moana}; Station ALOHA}
 
 \owListEnd
 }
