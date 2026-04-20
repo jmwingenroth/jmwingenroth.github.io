@@ -108,7 +108,7 @@
 % Experience entry with wrapping title, right-aligned date, and sub-line
 \newcommand{\expHeading}[3]{%
   \renewcommand{\arraystretch}{1.2}%
-  \begin{tabularx}{\linewidth}{@{}X@{\hspace{1em}}r@{}}
+  \begin{tabularx}{\linewidth}[t]{@{}X@{\hspace{1em}}r@{}}
     #1 & #2 \\
     \multicolumn{2}{@{}l@{}}{#3}
   \end{tabularx}%
