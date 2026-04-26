@@ -16,6 +16,8 @@
 \usepackage{enumitem}
 \usepackage{ragged2e}
 \usepackage{etaremune}
+\usepackage{xcolor}
+\definecolor{accent}{HTML}{26998f}
 % Font style
 \usepackage{fontspec}
 \setmainfont{EBGaramond}[
@@ -58,6 +60,8 @@
   \CronosLt\scshape\raggedright
   \fontsize{14.5pt}{14.5pt}\selectfont
 }{}{0em}{}
+\let\origsection\section
+\renewcommand{\section}[1]{\origsection{\textcolor{accent}{#1}}}
 % Other writing list
 \newcommand{\owListStart}{\begin{itemize}[left=0pt, itemsep=3pt]}
 \newcommand{\owListEnd}{\end{itemize}\vspace{-14pt}}
