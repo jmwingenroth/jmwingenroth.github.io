@@ -6,3 +6,4 @@ docs/*.fls
 docs/*.fdb_latexmk
 docs/*.synctex.gz
 .DS_Store
+texput.log
