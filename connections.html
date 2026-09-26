@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artists &amp; Scientists — Jordan Wingenroth</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,700;1,400&family=Inter:wght@300;400;500&display=swap');
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --sand: #f5f2ee;
+      --ink: #1c1c1c;
+      --muted: #6b6460;
+      --rule: #ddd8d2;
+      --artist: #9e4d72;
+      --scientist: #26998f;
+      --both: #d97b4c;
+    }
+
+    html {
+      font-size: 17px;
+      background: var(--sand);
+      color: var(--ink);
+    }
+
+    body {
+      font-family: 'EB Garamond', Georgia, serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 12px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ── nav tabs ── */
+    .page-nav {
+      display: flex;
+      padding: 4px;
+      gap: 2px;
+      width: min(1100px, 94vw);
+      margin-bottom: 12px;
+    }
+
+    .nav-btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.74rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 7px 20px;
+      border-radius: 10px;
+      transition: color 0.15s;
+      white-space: nowrap;
+    }
+
+    .nav-btn:hover { color: var(--ink); }
+
+    /* ── main card ── */
+    .card {
+      width: min(1100px, 94vw);
+      margin: 0 auto 80px;
+      padding: 40px 48px 56px;
+      background: #fff;
+      border-radius: 28px;
+      box-shadow: 0 4px 40px rgba(0,0,0,0.06);
+    }
+
+    h1 {
+      font-weight: 500;
+      font-size: 2rem;
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+
+    .intro {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: #333;
+      max-width: 62ch;
+      margin-bottom: 20px;
+    }
+
+    /* ── sticky legend ── */
+    .legend {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px 20px;
+      padding: 12px 0;
+      background: rgba(255,255,255,0.94);
+      backdrop-filter: blur(4px);
+      border-bottom: 1px solid var(--rule);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.03em;
+    }
+
+    .legend .key {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .legend .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      border: 2.5px solid currentColor;
+    }
+
+    .legend .hint { margin-left: auto; }
+
+    .chart-scroll {
+      width: 100%;
+      margin-top: 8px;
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
+
+    #chart {
+      position: relative;
+      width: 100%;
+      min-width: 880px;
+    }
+
+    #chart svg {
+      display: block;
+      width: 100%;
+      overflow: visible;
+    }
+
+    /* ── chart marks ── */
+    .axis text {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      fill: var(--muted);
+    }
+
+    .axis .century text {
+      font-size: 13px;
+      font-weight: 500;
+      fill: var(--ink);
+    }
+
+    .grid line { stroke: #efebe6; }
+    .grid .century line { stroke: var(--rule); }
+
+    .lifeline {
+      stroke-width: 2.5px;
+      stroke-linecap: round;
+      opacity: 0.35;
+    }
+
+    .link {
+      fill: none;
+      stroke: #8f8781;
+      stroke-width: 1.6px;
+      opacity: 0.55;
+    }
+
+    .link-hit {
+      fill: none;
+      stroke: transparent;
+      stroke-width: 12px;
+      cursor: pointer;
+    }
+
+    .link-end { fill: #8f8781; opacity: 0.7; }
+
+    .node { cursor: pointer; outline: none; }
+    .node:focus-visible .ring { stroke: var(--ink); stroke-width: 3.5px; }
+    .node .ring { fill: #fff; stroke-width: 2.5px; }
+    .node .initials {
+      font-family: 'Inter', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      text-anchor: middle;
+      dominant-baseline: central;
+      fill: var(--muted);
+    }
+
+    .node .label {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 13.5px;
+      fill: var(--ink);
+      paint-order: stroke;
+      stroke: #fff;
+      stroke-width: 3px;
+      stroke-linejoin: round;
+    }
+
+    .node .label.crowded { opacity: 0; }
+    .node:hover .label.crowded, .node:focus .label.crowded, svg.focus .node.hl .label.crowded { opacity: 1; }
+
+    /* highlight / dim states */
+    svg.focus .node, svg.focus .lifeline, svg.focus .link, svg.focus .link-end {
+      transition: opacity 0.15s;
+    }
+    svg.focus .node:not(.hl) { opacity: 0.18; }
+    svg.focus .lifeline:not(.hl) { opacity: 0.08; }
+    svg.focus .link:not(.hl), svg.focus .link-end:not(.hl) { opacity: 0.06; }
+    svg.focus .lifeline.hl { opacity: 0.7; }
+    svg.focus .link.hl { opacity: 1; stroke: var(--ink); stroke-width: 2.2px; }
+    svg.focus .link-end.hl { opacity: 1; fill: var(--ink); }
+
+    /* ── tooltip ── */
+    .tip {
+      position: absolute;
+      z-index: 10;
+      pointer-events: none;
+      width: 280px;
+      padding: 14px 16px;
+      background: #fff;
+      border: 1px solid var(--rule);
+      border-radius: 14px;
+      box-shadow: 0 6px 28px rgba(0,0,0,0.12);
+      opacity: 0;
+      transition: opacity 0.12s;
+    }
+
+    .tip.show { opacity: 1; }
+
+    .tip .head {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .tip img, .tip .ph {
+      width: 64px;
+      height: 64px;
+      flex-shrink: 0;
+      border-radius: 10px;
+      object-fit: cover;
+      object-position: 50% 20%;
+      background: var(--sand);
+    }
+
+    .tip .name {
+      font-size: 1.15rem;
+      font-weight: 500;
+      line-height: 1.15;
+    }
+
+    .tip .dates, .tip .role {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.03em;
+      margin-top: 3px;
+    }
+
+    .tip .role { text-transform: uppercase; letter-spacing: 0.07em; }
+
+    .tip .desc {
+      font-size: 0.98rem;
+      line-height: 1.45;
+      color: #333;
+    }
+
+    .tip .pair {
+      font-size: 1.05rem;
+      font-weight: 500;
+      line-height: 1.25;
+      margin-bottom: 2px;
+    }
+
+    .tip .year {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .credit {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 300;
+      color: var(--muted);
+      margin-top: 28px;
+      line-height: 1.6;
+    }
+
+    .credit a { color: inherit; }
+
+    @media (max-width: 640px) {
+      .card { padding: 24px 16px 40px; border-radius: 20px; width: 100%; }
+      .page-nav { width: 100%; padding: 4px 8px; }
+      h1 { font-size: 1.6rem; }
+      .legend .hint { margin-left: 0; width: 100%; }
+      .legend .hint::after { content: ' · swipe sideways to see more'; }
+      .node .label { font-size: 12px; }
+      .tip { width: 240px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="page-nav">
+    <a href="index.html" class="nav-btn">About</a>
+    <a href="research.html" class="nav-btn">Research</a>
+    <a href="docs/cv.pdf" class="nav-btn" target="_blank" rel="noopener">CV</a>
+  </nav>
+
+  <main class="card">
+    <h1>When Artists Met Scientists</h1>
+    <p class="intro">
+      Five centuries of friendships and acquaintances between painters, poets, musicians and the scientists of their day.
+      Each portrait sits at the person's birth year, with a line running down to their death. Each arc marks roughly when two of them met.
+    </p>
+
+    <div class="legend" aria-hidden="true">
+      <span class="key" style="color: var(--artist)"><span class="dot"></span><span style="color: var(--muted)">Artist</span></span>
+      <span class="key" style="color: var(--scientist)"><span class="dot"></span><span style="color: var(--muted)">Scientist</span></span>
+      <span class="key" style="color: var(--both)"><span class="dot"></span><span style="color: var(--muted)">Both</span></span>
+      <span class="hint">Hover or tap a portrait or an arc for details</span>
+    </div>
+
+    <div class="chart-scroll"><div id="chart"></div></div>
+
+    <p class="credit">
+      Portraits load from <a href="https://www.wikipedia.org" target="_blank" rel="noopener">Wikipedia</a>/Wikimedia Commons.
+      Meeting years are approximate; “c.” means the date is a best estimate.
+    </p>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+  <script>
+  // type: a = artist, s = scientist, b = both
+  // wiki: English Wikipedia page title, used to fetch the portrait
+  const PEOPLE = [
+    { id: 'pacioli', name: 'Luca Pacioli', born: 1447, died: 1517, type: 's', role: 'Mathematician', wiki: 'Luca_Pacioli',
+      desc: 'Franciscan friar who wrote the first printed treatise on double-entry bookkeeping.' },
+    { id: 'leonardo', name: 'Leonardo da Vinci', born: 1452, died: 1519, type: 'b', role: 'Painter & engineer', wiki: 'Leonardo_da_Vinci',
+      desc: 'Painter of the Mona Lisa whose notebooks brim with anatomy, optics and flying machines.' },
+    { id: 'stabius', name: 'Johannes Stabius', born: 1460, died: 1522, type: 's', role: 'Astronomer & cartographer', wiki: 'Johannes_Stabius',
+      desc: 'Court mathematician to Emperor Maximilian I, remembered for a heart-shaped world map projection.' },
+    { id: 'durer', name: 'Albrecht Dürer', born: 1471, died: 1528, type: 'a', role: 'Painter & printmaker', wiki: 'Albrecht_Dürer',
+      desc: 'Nuremberg master who made the woodcut and engraving into high art.' },
+    { id: 'michelangelo', name: 'Michelangelo', born: 1475, died: 1564, type: 'a', role: 'Sculptor & painter', wiki: 'Michelangelo',
+      desc: 'Sculptor of David and painter of the Sistine Chapel ceiling.' },
+    { id: 'kratzer', name: 'Nicolaus Kratzer', born: 1487, died: 1550, type: 's', role: 'Astronomer', wiki: 'Nicolaus_Kratzer',
+      desc: 'Bavarian astronomer and sundial maker at the court of Henry VIII.' },
+    { id: 'holbein', name: 'Hans Holbein the Younger', born: 1497, died: 1543, type: 'a', role: 'Painter', wiki: 'Hans_Holbein_the_Younger',
+      desc: 'Portraitist of the Tudor court and painter of The Ambassadors.' },
+    { id: 'cigoli', name: 'Lodovico Cigoli', born: 1559, died: 1613, type: 'a', role: 'Painter & architect', wiki: 'Lodovico_Cigoli',
+      desc: 'Florentine painter who put the first telescopic, cratered Moon into a church fresco.' },
+    { id: 'galileo', name: 'Galileo Galilei', born: 1564, died: 1642, type: 's', role: 'Astronomer & physicist', wiki: 'Galileo_Galilei',
+      desc: 'Turned the telescope on the heavens and was tried by the Inquisition for backing Copernicus.' },
+    { id: 'rubens', name: 'Peter Paul Rubens', born: 1577, died: 1640, type: 'a', role: 'Painter', wiki: 'Peter_Paul_Rubens',
+      desc: 'Flemish Baroque painter and diplomat famed for exuberant, fleshy canvases.' },
+    { id: 'peiresc', name: 'Nicolas-Claude Fabri de Peiresc', born: 1580, died: 1637, type: 's', role: 'Astronomer & antiquary', wiki: 'Nicolas-Claude_Fabri_de_Peiresc',
+      desc: 'Provençal polymath who discovered the Orion Nebula and wrote thousands of letters across Europe.' },
+    { id: 'artemisia', name: 'Artemisia Gentileschi', born: 1593, died: 1656, diedApprox: true, type: 'a', role: 'Painter', wiki: 'Artemisia_Gentileschi',
+      desc: 'Caravaggesque painter and the first woman admitted to Florence’s Accademia del Disegno.' },
+    { id: 'tulp', name: 'Nicolaes Tulp', born: 1593, died: 1674, type: 's', role: 'Surgeon & anatomist', wiki: 'Nicolaes_Tulp',
+      desc: 'Amsterdam anatomist who described the ileocecal valve and was eight times the city’s mayor.' },
+    { id: 'descartes', name: 'René Descartes', born: 1596, died: 1650, type: 's', role: 'Philosopher & mathematician', wiki: 'René_Descartes',
+      desc: 'Invented analytic geometry and declared “I think, therefore I am.”' },
+    { id: 'chuygens', name: 'Constantijn Huygens', born: 1596, died: 1687, type: 'a', role: 'Poet & composer', wiki: 'Constantijn_Huygens',
+      desc: 'Dutch Golden Age poet, composer and statesman who spotted the young Rembrandt’s talent.' },
+    { id: 'rembrandt', name: 'Rembrandt', born: 1606, died: 1669, type: 'a', role: 'Painter', wiki: 'Rembrandt',
+      desc: 'Master of light and shadow and one of the greatest portraitists of any age.' },
+    { id: 'milton', name: 'John Milton', born: 1608, died: 1674, type: 'a', role: 'Poet', wiki: 'John_Milton',
+      desc: 'English poet who dictated Paradise Lost after going blind.' },
+    { id: 'lely', name: 'Peter Lely', born: 1618, died: 1680, type: 'a', role: 'Painter', wiki: 'Peter_Lely',
+      desc: 'Dutch-born portraitist who painted Restoration England’s court beauties.' },
+    { id: 'huygens', name: 'Christiaan Huygens', born: 1629, died: 1695, type: 's', role: 'Physicist & astronomer', wiki: 'Christiaan_Huygens',
+      desc: 'Discovered Saturn’s moon Titan, invented the pendulum clock and proposed the wave theory of light.' },
+    { id: 'vermeer', name: 'Johannes Vermeer', born: 1632, died: 1675, type: 'a', role: 'Painter', wiki: 'Johannes_Vermeer',
+      desc: 'Delft painter of luminous domestic interiors, including Girl with a Pearl Earring.' },
+    { id: 'leeuwenhoek', name: 'Antonie van Leeuwenhoek', born: 1632, died: 1723, type: 's', role: 'Microbiologist', wiki: 'Antonie_van_Leeuwenhoek',
+      desc: 'Delft draper whose handmade lenses revealed bacteria and sperm cells for the first time.' },
+    { id: 'wren', name: 'Christopher Wren', born: 1632, died: 1723, type: 'b', role: 'Architect & astronomer', wiki: 'Christopher_Wren',
+      desc: 'Astronomy professor turned architect who rebuilt St Paul’s Cathedral after the Great Fire.' },
+    { id: 'hooke', name: 'Robert Hooke', born: 1635, died: 1703, type: 's', role: 'Natural philosopher', wiki: 'Robert_Hooke',
+      desc: 'Coined the word “cell” in Micrographia and formulated the law of elasticity.' },
+    { id: 'newton', name: 'Isaac Newton', born: 1643, died: 1727, type: 's', role: 'Physicist & mathematician', wiki: 'Isaac_Newton',
+      desc: 'Laid down the laws of motion and universal gravitation and co-invented calculus.' },
+    { id: 'kneller', name: 'Godfrey Kneller', born: 1646, died: 1723, type: 'a', role: 'Painter', wiki: 'Godfrey_Kneller',
+      desc: 'Leading court portrait painter in England from Charles II to George I.' },
+    { id: 'halley', name: 'Edmond Halley', born: 1656, died: 1742, type: 's', role: 'Astronomer', wiki: 'Edmond_Halley',
+      desc: 'Predicted the return of the comet that bears his name.' },
+    { id: 'voltaire', name: 'Voltaire', born: 1694, died: 1778, type: 'a', role: 'Writer', wiki: 'Voltaire',
+      desc: 'Enlightenment satirist and author of Candide who popularized Newton in France.' },
+    { id: 'franklin', name: 'Benjamin Franklin', born: 1706, died: 1790, type: 's', role: 'Scientist & statesman', wiki: 'Benjamin_Franklin',
+      desc: 'Proved lightning is electricity and invented the lightning rod and bifocals.' },
+    { id: 'chatelet', name: 'Émilie du Châtelet', born: 1706, died: 1749, type: 's', role: 'Mathematician & physicist', wiki: 'Émilie_du_Châtelet',
+      desc: 'Translated Newton’s Principia into French, a version still standard today.' },
+    { id: 'wedgwood', name: 'Josiah Wedgwood', born: 1730, died: 1795, type: 'a', role: 'Potter & designer', wiki: 'Josiah_Wedgwood',
+      desc: 'Potter who industrialized fine ceramics and created the Wedgwood jasperware style.' },
+    { id: 'edarwin', name: 'Erasmus Darwin', born: 1731, died: 1802, type: 's', role: 'Physician & naturalist', wiki: 'Erasmus_Darwin',
+      desc: 'Physician, poet and early evolutionary thinker; grandfather of Charles Darwin.' },
+    { id: 'priestley', name: 'Joseph Priestley', born: 1733, died: 1804, type: 's', role: 'Chemist', wiki: 'Joseph_Priestley',
+      desc: 'Isolated oxygen and invented carbonated water.' },
+    { id: 'wright', name: 'Joseph Wright of Derby', born: 1734, died: 1797, type: 'a', role: 'Painter', wiki: 'Joseph_Wright_of_Derby',
+      desc: 'Painter of candlelit scientific experiments who captured the spirit of the Industrial Revolution.' },
+    { id: 'houdon', name: 'Jean-Antoine Houdon', born: 1741, died: 1828, type: 'a', role: 'Sculptor', wiki: 'Jean-Antoine_Houdon',
+      desc: 'Neoclassical sculptor whose busts preserve the faces of the Enlightenment.' },
+    { id: 'goethe', name: 'Johann Wolfgang von Goethe', born: 1749, died: 1832, type: 'b', role: 'Writer & naturalist', wiki: 'Johann_Wolfgang_von_Goethe',
+      desc: 'Author of Faust who also wrote a theory of colours and studied plant morphology.' },
+    { id: 'schiller', name: 'Friedrich Schiller', born: 1759, died: 1805, type: 'a', role: 'Poet & playwright', wiki: 'Friedrich_Schiller',
+      desc: 'Playwright and poet whose “Ode to Joy” Beethoven set in his Ninth Symphony.' },
+    { id: 'humboldt', name: 'Alexander von Humboldt', born: 1769, died: 1859, type: 's', role: 'Naturalist & explorer', wiki: 'Alexander_von_Humboldt',
+      desc: 'Explorer of the Americas who pictured nature as one interconnected web.' },
+    { id: 'beethoven', name: 'Ludwig van Beethoven', born: 1770, died: 1827, type: 'a', role: 'Composer', wiki: 'Ludwig_van_Beethoven',
+      desc: 'Composer who bridged the Classical and Romantic eras and kept writing after going deaf.' },
+    { id: 'turner', name: 'J. M. W. Turner', born: 1775, died: 1851, type: 'a', role: 'Painter', wiki: 'J._M._W._Turner',
+      desc: 'Romantic painter of storms, steam and light.' },
+    { id: 'gauss', name: 'Carl Friedrich Gauss', born: 1777, died: 1855, type: 's', role: 'Mathematician', wiki: 'Carl_Friedrich_Gauss',
+      desc: 'The “prince of mathematicians”, from number theory to magnetism.' },
+    { id: 'orsted', name: 'Hans Christian Ørsted', born: 1777, died: 1851, type: 's', role: 'Physicist', wiki: 'Hans_Christian_Ørsted',
+      desc: 'Discovered that electric currents create magnetic fields.' },
+    { id: 'somerville', name: 'Mary Somerville', born: 1780, died: 1872, type: 's', role: 'Scientist & writer', wiki: 'Mary_Somerville',
+      desc: 'Scottish polymath whose physics book was reviewed in the essay that coined the word “scientist”.' },
+    { id: 'daguerre', name: 'Louis Daguerre', born: 1787, died: 1851, type: 'b', role: 'Artist & inventor', wiki: 'Louis_Daguerre',
+      desc: 'Theatre painter who invented the daguerreotype, the first practical photographic process.' },
+    { id: 'babbage', name: 'Charles Babbage', born: 1791, died: 1871, type: 's', role: 'Mathematician & engineer', wiki: 'Charles_Babbage',
+      desc: 'Designed the Analytical Engine, a mechanical general-purpose computer.' },
+    { id: 'faraday', name: 'Michael Faraday', born: 1791, died: 1867, type: 's', role: 'Physicist & chemist', wiki: 'Michael_Faraday',
+      desc: 'Bookbinder’s apprentice who discovered electromagnetic induction.' },
+    { id: 'morse', name: 'Samuel Morse', born: 1791, died: 1872, type: 'b', role: 'Painter & inventor', wiki: 'Samuel_Morse',
+      desc: 'Portrait painter who co-invented the electric telegraph and Morse code.' },
+    { id: 'herschel', name: 'John Herschel', born: 1792, died: 1871, type: 's', role: 'Astronomer & chemist', wiki: 'John_Herschel',
+      desc: 'Catalogued the southern skies and coined the word “photography”.' },
+    { id: 'talbot', name: 'Henry Fox Talbot', born: 1800, died: 1877, type: 'b', role: 'Scientist & photographer', wiki: 'Henry_Fox_Talbot',
+      desc: 'Invented the negative–positive photographic process.' },
+    { id: 'andersen', name: 'Hans Christian Andersen', born: 1805, died: 1875, type: 'a', role: 'Writer', wiki: 'Hans_Christian_Andersen',
+      desc: 'Danish author of The Little Mermaid and The Ugly Duckling.' },
+    { id: 'agassiz', name: 'Louis Agassiz', born: 1807, died: 1873, type: 's', role: 'Biologist & geologist', wiki: 'Louis_Agassiz',
+      desc: 'Swiss-born naturalist who first proposed that Earth had an ice age.' },
+    { id: 'longfellow', name: 'Henry Wadsworth Longfellow', born: 1807, died: 1882, type: 'a', role: 'Poet', wiki: 'Henry_Wadsworth_Longfellow',
+      desc: 'American poet of “Paul Revere’s Ride” and The Song of Hiawatha.' },
+    { id: 'darwin', name: 'Charles Darwin', born: 1809, died: 1882, type: 's', role: 'Naturalist', wiki: 'Charles_Darwin',
+      desc: 'Explained the origin of species by natural selection.' },
+    { id: 'dickens', name: 'Charles Dickens', born: 1812, died: 1870, type: 'a', role: 'Novelist', wiki: 'Charles_Dickens',
+      desc: 'Victorian novelist of Oliver Twist and A Christmas Carol.' },
+    { id: 'lovelace', name: 'Ada Lovelace', born: 1815, died: 1852, type: 's', role: 'Mathematician', wiki: 'Ada_Lovelace',
+      desc: 'Wrote what is considered the first computer program, for Babbage’s Analytical Engine.' },
+    { id: 'cameron', name: 'Julia Margaret Cameron', born: 1815, died: 1879, type: 'a', role: 'Photographer', wiki: 'Julia_Margaret_Cameron',
+      desc: 'Pioneering portrait photographer known for soft-focus, intimate close-ups.' },
+    { id: 'thuxley', name: 'Thomas Henry Huxley', born: 1825, died: 1895, type: 's', role: 'Biologist', wiki: 'Thomas_Henry_Huxley',
+      desc: '“Darwin’s Bulldog”, the fiercest public defender of evolution.' },
+    { id: 'muybridge', name: 'Eadweard Muybridge', born: 1830, died: 1904, type: 'a', role: 'Photographer', wiki: 'Eadweard_Muybridge',
+      desc: 'Photographed a galloping horse in sequence, a milestone on the road to cinema.' },
+    { id: 'marey', name: 'Étienne-Jules Marey', born: 1830, died: 1904, type: 's', role: 'Physiologist', wiki: 'Étienne-Jules_Marey',
+      desc: 'Invented the “photographic gun” to study movement in animals and people.' },
+    { id: 'twain', name: 'Mark Twain', born: 1835, died: 1910, type: 'a', role: 'Writer', wiki: 'Mark_Twain',
+      desc: 'Author of Adventures of Huckleberry Finn and America’s great humorist.' },
+    { id: 'rodin', name: 'Auguste Rodin', born: 1840, died: 1917, type: 'a', role: 'Sculptor', wiki: 'Auguste_Rodin',
+      desc: 'Sculptor of The Thinker who broke with academic tradition.' },
+    { id: 'eakins', name: 'Thomas Eakins', born: 1844, died: 1916, type: 'a', role: 'Painter & photographer', wiki: 'Thomas_Eakins',
+      desc: 'American realist who painted surgeons at work and rowers on the Schuylkill.' },
+    { id: 'bernhardt', name: 'Sarah Bernhardt', born: 1844, died: 1923, type: 'a', role: 'Actress', wiki: 'Sarah_Bernhardt',
+      desc: '“The Divine Sarah”, the most famous stage actress of her century.' },
+    { id: 'edison', name: 'Thomas Edison', born: 1847, died: 1931, type: 's', role: 'Inventor', wiki: 'Thomas_Edison',
+      desc: 'Inventor of the phonograph and a practical incandescent light bulb.' },
+    { id: 'tesla', name: 'Nikola Tesla', born: 1856, died: 1943, type: 's', role: 'Inventor & engineer', wiki: 'Nikola_Tesla',
+      desc: 'Pioneer of alternating current, induction motors and radio.' },
+    { id: 'freud', name: 'Sigmund Freud', born: 1856, died: 1939, type: 's', role: 'Neurologist', wiki: 'Sigmund_Freud',
+      desc: 'Founder of psychoanalysis and the talking cure.' },
+    { id: 'mahler', name: 'Gustav Mahler', born: 1860, died: 1911, type: 'a', role: 'Composer & conductor', wiki: 'Gustav_Mahler',
+      desc: 'Late-Romantic composer of vast, searching symphonies.' },
+    { id: 'tagore', name: 'Rabindranath Tagore', born: 1861, died: 1941, type: 'a', role: 'Poet', wiki: 'Rabindranath_Tagore',
+      desc: 'Bengali polymath and the first non-European to win the Nobel Prize in Literature.' },
+    { id: 'lfuller', name: 'Loïe Fuller', born: 1862, died: 1928, type: 'a', role: 'Dancer', wiki: 'Loie_Fuller',
+      desc: 'Modern-dance pioneer who swirled silk under colored electric light.' },
+    { id: 'wells', name: 'H. G. Wells', born: 1866, died: 1946, type: 'a', role: 'Writer', wiki: 'H._G._Wells',
+      desc: 'Science-trained novelist of The Time Machine and The War of the Worlds.' },
+    { id: 'curie', name: 'Marie Curie', born: 1867, died: 1934, type: 's', role: 'Physicist & chemist', wiki: 'Marie_Curie',
+      desc: 'Discovered polonium and radium and won Nobel Prizes in two sciences.' },
+    { id: 'einstein', name: 'Albert Einstein', born: 1879, died: 1955, type: 's', role: 'Physicist', wiki: 'Albert_Einstein',
+      desc: 'Developed the theories of relativity and helped found quantum theory.' },
+    { id: 'bohr', name: 'Niels Bohr', born: 1885, died: 1962, type: 's', role: 'Physicist', wiki: 'Niels_Bohr',
+      desc: 'Built the quantum model of the atom.' },
+    { id: 'eliot', name: 'T. S. Eliot', born: 1888, died: 1965, type: 'a', role: 'Poet', wiki: 'T._S._Eliot',
+      desc: 'Modernist poet of The Waste Land.' },
+    { id: 'chaplin', name: 'Charlie Chaplin', born: 1889, died: 1977, type: 'a', role: 'Actor & filmmaker', wiki: 'Charlie_Chaplin',
+      desc: 'Silent-film comic genius behind the Little Tramp.' },
+    { id: 'hubble', name: 'Edwin Hubble', born: 1889, died: 1953, type: 's', role: 'Astronomer', wiki: 'Edwin_Hubble',
+      desc: 'Showed that the universe holds other galaxies and is expanding.' },
+    { id: 'ahuxley', name: 'Aldous Huxley', born: 1894, died: 1963, type: 'a', role: 'Writer', wiki: 'Aldous_Huxley',
+      desc: 'Novelist of Brave New World; grandson of T. H. Huxley.' },
+    { id: 'bfuller', name: 'Buckminster Fuller', born: 1895, died: 1983, type: 'b', role: 'Architect & inventor', wiki: 'Buckminster_Fuller',
+      desc: 'Visionary designer who popularized the geodesic dome.' },
+    { id: 'robeson', name: 'Paul Robeson', born: 1898, died: 1976, type: 'a', role: 'Singer & actor', wiki: 'Paul_Robeson',
+      desc: 'Bass-baritone, actor and civil-rights activist.' },
+    { id: 'antheil', name: 'George Antheil', born: 1900, died: 1959, type: 'a', role: 'Composer', wiki: 'George_Antheil',
+      desc: 'Self-styled “bad boy of music” whose Ballet Mécanique used synchronized player pianos.' },
+    { id: 'disney', name: 'Walt Disney', born: 1901, died: 1966, type: 'a', role: 'Animator & producer', wiki: 'Walt_Disney',
+      desc: 'Animation pioneer who created Mickey Mouse.' },
+    { id: 'dali', name: 'Salvador Dalí', born: 1904, died: 1989, type: 'a', role: 'Painter', wiki: 'Salvador_Dalí',
+      desc: 'Surrealist painter of melting clocks.' },
+    { id: 'noguchi', name: 'Isamu Noguchi', born: 1904, died: 1988, type: 'a', role: 'Sculptor & designer', wiki: 'Isamu_Noguchi',
+      desc: 'Sculptor, landscape architect and designer of the Akari paper lamps.' },
+    { id: 'oppenheimer', name: 'J. Robert Oppenheimer', born: 1904, died: 1967, type: 's', role: 'Physicist', wiki: 'J._Robert_Oppenheimer',
+      desc: 'Directed the Los Alamos laboratory that built the first atomic bomb.' },
+    { id: 'zorthian', name: 'Jirayr Zorthian', born: 1911, died: 2004, type: 'a', role: 'Painter', wiki: 'Jirayr_Zorthian',
+      desc: 'Armenian-American painter and muralist with a free-spirited ranch in Altadena.' },
+    { id: 'cage', name: 'John Cage', born: 1912, died: 1992, type: 'a', role: 'Composer', wiki: 'John_Cage',
+      desc: 'Avant-garde composer of 4′33″ and pioneer of chance music.' },
+    { id: 'vonbraun', name: 'Wernher von Braun', born: 1912, died: 1977, type: 's', role: 'Rocket engineer', wiki: 'Wernher_von_Braun',
+      desc: 'Rocket engineer behind the Saturn V that carried Apollo to the Moon.' },
+    { id: 'lamarr', name: 'Hedy Lamarr', born: 1914, died: 2000, type: 'b', role: 'Actress & inventor', wiki: 'Hedy_Lamarr',
+      desc: 'Hollywood star who co-invented frequency hopping, an ancestor of Wi-Fi and Bluetooth.' },
+    { id: 'clarke', name: 'Arthur C. Clarke', born: 1917, died: 2008, type: 'a', role: 'Writer', wiki: 'Arthur_C._Clarke',
+      desc: 'Science-fiction author who first proposed geostationary communication satellites.' },
+    { id: 'feynman', name: 'Richard Feynman', born: 1918, died: 1988, type: 's', role: 'Physicist', wiki: 'Richard_Feynman',
+      desc: 'Nobel physicist of quantum electrodynamics, bongo drums and safecracking.' },
+    { id: 'asimov', name: 'Isaac Asimov', born: 1920, died: 1992, type: 'b', role: 'Writer & biochemist', wiki: 'Isaac_Asimov',
+      desc: 'Biochemistry professor who wrote or edited some 500 books, including I, Robot.' },
+    { id: 'minsky', name: 'Marvin Minsky', born: 1927, died: 2016, type: 's', role: 'Computer scientist', wiki: 'Marvin_Minsky',
+      desc: 'Co-founder of MIT’s artificial intelligence laboratory.' },
+    { id: 'kubrick', name: 'Stanley Kubrick', born: 1928, died: 1999, type: 'a', role: 'Filmmaker', wiki: 'Stanley_Kubrick',
+      desc: 'Perfectionist director of Dr. Strangelove and 2001: A Space Odyssey.' },
+    { id: 'sagan', name: 'Carl Sagan', born: 1934, died: 1996, type: 's', role: 'Astronomer', wiki: 'Carl_Sagan',
+      desc: 'Planetary scientist and host of Cosmos.' },
+  ];
+
+  // year: roughly when they met (or the relationship is best documented); approx marks a best estimate
+  const LINKS = [
+    { s: 'leonardo', t: 'pacioli', year: 1496, note: 'Friends in Milan; Leonardo drew the polyhedra for Pacioli’s De divina proportione.' },
+    { s: 'leonardo', t: 'michelangelo', year: 1504, note: 'Rivals commissioned to paint facing battle murals in Florence’s Palazzo Vecchio.' },
+    { s: 'durer', t: 'stabius', year: 1515, note: 'Collaborated on the first printed star charts of the northern and southern skies.' },
+    { s: 'durer', t: 'kratzer', year: 1520, note: 'Met in Antwerp, where Dürer drew the astronomer’s portrait.' },
+    { s: 'holbein', t: 'kratzer', year: 1528, note: 'Friends at the English court; Holbein painted Kratzer with his instruments.' },
+    { s: 'galileo', t: 'cigoli', year: 1590, approx: true, note: 'Lifelong friends; Cigoli painted Galileo’s cratered Moon beneath the Virgin’s feet.' },
+    { s: 'galileo', t: 'artemisia', year: 1615, approx: true, note: 'Knew each other in Florence and later exchanged letters.' },
+    { s: 'rubens', t: 'peiresc', year: 1620, approx: true, note: 'Close friends and prolific correspondents on art, antiquity and science.' },
+    { s: 'galileo', t: 'peiresc', year: 1634, note: 'Correspondents; Peiresc lobbied Rome on Galileo’s behalf after his trial.' },
+    { s: 'chuygens', t: 'rembrandt', year: 1629, note: 'Huygens visited the young Rembrandt in Leiden and helped launch his career.' },
+    { s: 'chuygens', t: 'descartes', year: 1632, note: 'Friends and correspondents for nearly two decades.' },
+    { s: 'rembrandt', t: 'tulp', year: 1632, note: 'Rembrandt painted Tulp’s public dissection in The Anatomy Lesson.' },
+    { s: 'galileo', t: 'milton', year: 1638, note: 'The young poet visited the aged Galileo under house arrest near Florence.' },
+    { s: 'hooke', t: 'lely', year: 1648, approx: true, note: 'Teenage Hooke briefly apprenticed in Lely’s London studio.' },
+    { s: 'chuygens', t: 'huygens', year: 1629, note: 'Father and son; Constantijn fostered Christiaan’s scientific education.' },
+    { s: 'wren', t: 'hooke', year: 1658, approx: true, note: 'Close friends and partners in rebuilding London after the Great Fire.' },
+    { s: 'hooke', t: 'newton', year: 1672, note: 'Fellow Royal Society members and bitter rivals over light and gravity.' },
+    { s: 'chuygens', t: 'leeuwenhoek', year: 1673, note: 'Huygens vouched for the self-taught Delft microscopist to the Royal Society.' },
+    { s: 'vermeer', t: 'leeuwenhoek', year: 1675, note: 'Born days apart in Delft; Leeuwenhoek became trustee of Vermeer’s estate.' },
+    { s: 'halley', t: 'wren', year: 1684, note: 'Coffee-house wager with Hooke over who could derive planetary orbits.' },
+    { s: 'halley', t: 'newton', year: 1684, note: 'Halley coaxed Newton into writing, and paid to publish, the Principia.' },
+    { s: 'newton', t: 'kneller', year: 1689, note: 'Newton sat for Kneller’s portraits several times.' },
+    { s: 'huygens', t: 'newton', year: 1689, note: 'Met in London and discussed optics and gravity.' },
+    { s: 'voltaire', t: 'chatelet', year: 1733, note: 'Lovers and intellectual partners at Cirey for fifteen years.' },
+    { s: 'franklin', t: 'priestley', year: 1765, note: 'Friends in London; Franklin encouraged Priestley’s history of electricity.' },
+    { s: 'wedgwood', t: 'edarwin', year: 1765, approx: true, note: 'Close friends and fellow members of the Lunar Society.' },
+    { s: 'wedgwood', t: 'priestley', year: 1766, approx: true, note: 'Friends; Wedgwood made laboratory ware for Priestley’s experiments.' },
+    { s: 'wright', t: 'edarwin', year: 1770, note: 'Friends; Wright painted Darwin’s portrait.' },
+    { s: 'franklin', t: 'voltaire', year: 1778, note: 'Embraced before a cheering Académie des Sciences in Paris.' },
+    { s: 'houdon', t: 'voltaire', year: 1778, note: 'Houdon sculpted the famous seated Voltaire from life.' },
+    { s: 'houdon', t: 'franklin', year: 1778, note: 'Houdon sculpted Franklin and later sailed to America with him.' },
+    { s: 'wright', t: 'wedgwood', year: 1782, note: 'Wedgwood commissioned Wright’s painting The Corinthian Maid.' },
+    { s: 'goethe', t: 'schiller', year: 1794, note: 'Began the friendship at the heart of Weimar Classicism.' },
+    { s: 'goethe', t: 'humboldt', year: 1794, note: 'Friends in Jena who talked botany, anatomy and geology.' },
+    { s: 'humboldt', t: 'schiller', year: 1795, note: 'Humboldt wrote for Schiller’s journal Die Horen.' },
+    { s: 'goethe', t: 'beethoven', year: 1812, note: 'Met and walked together at the spa town of Teplitz.' },
+    { s: 'herschel', t: 'babbage', year: 1812, note: 'Lifelong friends from Cambridge’s Analytical Society.' },
+    { s: 'andersen', t: 'orsted', year: 1821, approx: true, note: 'Ørsted was an early mentor and a lifelong friend to Andersen.' },
+    { s: 'herschel', t: 'talbot', year: 1824, approx: true, note: 'Friends who traded chemistry notes during photography’s birth.' },
+    { s: 'humboldt', t: 'gauss', year: 1828, note: 'Gauss stayed with Humboldt for his Berlin scientific congress.' },
+    { s: 'turner', t: 'faraday', year: 1830, approx: true, note: 'Acquaintances; Faraday advised painters on pigment chemistry.' },
+    { s: 'turner', t: 'somerville', year: 1830, approx: true, note: 'Friends in London’s art and science circles.' },
+    { s: 'herschel', t: 'somerville', year: 1830, approx: true, note: 'Friends who read and championed each other’s work.' },
+    { s: 'babbage', t: 'lovelace', year: 1833, note: 'Met at a party; she later wrote the famous notes on his Engine.' },
+    { s: 'somerville', t: 'lovelace', year: 1834, note: 'Tutor and friend to the young mathematician.' },
+    { s: 'herschel', t: 'cameron', year: 1836, note: 'Met at the Cape of Good Hope; he later introduced her to photography.' },
+    { s: 'darwin', t: 'babbage', year: 1837, note: 'Darwin was a regular at Babbage’s famous Saturday soirées.' },
+    { s: 'daguerre', t: 'morse', year: 1839, note: 'Morse visited Daguerre in Paris and brought the daguerreotype to America.' },
+    { s: 'dickens', t: 'babbage', year: 1840, approx: true, note: 'Friends; Dickens attended Babbage’s gatherings.' },
+    { s: 'humboldt', t: 'darwin', year: 1842, note: 'Met once in London; Darwin revered Humboldt’s travel writing.' },
+    { s: 'longfellow', t: 'dickens', year: 1842, note: 'Friends from Dickens’s first American tour.' },
+    { s: 'faraday', t: 'lovelace', year: 1844, note: 'Exchanged admiring letters.' },
+    { s: 'dickens', t: 'andersen', year: 1847, note: 'Met in London; Andersen later overstayed his welcome at Dickens’s home.' },
+    { s: 'agassiz', t: 'longfellow', year: 1847, approx: true, note: 'Close friends in Cambridge’s Saturday Club.' },
+    { s: 'dickens', t: 'faraday', year: 1850, note: 'Faraday lent his lecture notes for articles in Dickens’s magazine.' },
+    { s: 'dickens', t: 'lovelace', year: 1852, note: 'Dickens read to Lovelace at her request during her final illness.' },
+    { s: 'darwin', t: 'thuxley', year: 1856, note: 'Close friends; Huxley became the loudest champion of Darwin’s theory.' },
+    { s: 'cameron', t: 'darwin', year: 1868, note: 'Cameron photographed Darwin on the Isle of Wight.' },
+    { s: 'edison', t: 'bernhardt', year: 1880, note: 'Bernhardt toured Menlo Park, where Edison recorded her voice.' },
+    { s: 'muybridge', t: 'marey', year: 1881, note: 'Marey hosted Muybridge in Paris to demonstrate his motion photography.' },
+    { s: 'muybridge', t: 'eakins', year: 1884, note: 'Worked together on motion studies at the University of Pennsylvania.' },
+    { s: 'wells', t: 'thuxley', year: 1884, note: 'Wells studied biology under Huxley in London.' },
+    { s: 'edison', t: 'tesla', year: 1884, note: 'Tesla worked for Edison briefly before becoming his rival.' },
+    { s: 'twain', t: 'tesla', year: 1894, note: 'Friends; Twain was photographed in Tesla’s laboratory.' },
+    { s: 'lfuller', t: 'rodin', year: 1898, approx: true, note: 'Close friends; Fuller promoted Rodin’s work in America.' },
+    { s: 'lfuller', t: 'curie', year: 1904, approx: true, note: 'Fuller asked the Curies about glowing radium and became their friend.' },
+    { s: 'freud', t: 'mahler', year: 1910, note: 'Mahler had a four-hour analysis walking with Freud in Leiden.' },
+    { s: 'einstein', t: 'curie', year: 1911, note: 'Met at the first Solvay Conference and hiked the Alps together.' },
+    { s: 'einstein', t: 'bohr', year: 1920, note: 'Friends and lifelong sparring partners over quantum theory.' },
+    { s: 'einstein', t: 'freud', year: 1926, note: 'Met in Berlin and later co-wrote the public letters Why War?' },
+    { s: 'noguchi', t: 'bfuller', year: 1929, note: 'Close friends and collaborators in Greenwich Village.' },
+    { s: 'einstein', t: 'tagore', year: 1930, note: 'Held a celebrated conversation on truth and beauty in Berlin.' },
+    { s: 'einstein', t: 'chaplin', year: 1931, note: 'Einstein was Chaplin’s guest at the premiere of City Lights.' },
+    { s: 'wells', t: 'chaplin', year: 1931, approx: true, note: 'Friends in London and Hollywood.' },
+    { s: 'ahuxley', t: 'hubble', year: 1937, note: 'Friends in Los Angeles who shared long desert walks.' },
+    { s: 'lamarr', t: 'antheil', year: 1940, note: 'Co-invented frequency-hopping radio guidance for torpedoes.' },
+    { s: 'einstein', t: 'robeson', year: 1946, note: 'Friends and allies in the American Crusade to End Lynching.' },
+    { s: 'einstein', t: 'oppenheimer', year: 1947, note: 'Colleagues at Princeton’s Institute for Advanced Study.' },
+    { s: 'oppenheimer', t: 'eliot', year: 1948, note: 'Oppenheimer invited Eliot to spend a term at the Institute.' },
+    { s: 'bfuller', t: 'cage', year: 1948, note: 'Taught together at the summer session of Black Mountain College.' },
+    { s: 'freud', t: 'dali', year: 1938, note: 'Met in London, where Dalí sketched the ailing Freud.' },
+    { s: 'disney', t: 'vonbraun', year: 1954, note: 'Made space-travel television for Disneyland together.' },
+    { s: 'feynman', t: 'zorthian', year: 1963, approx: true, note: 'Swapped drawing lessons for physics lessons.' },
+    { s: 'kubrick', t: 'clarke', year: 1964, note: 'Co-wrote 2001: A Space Odyssey.' },
+    { s: 'sagan', t: 'kubrick', year: 1964, note: 'Advised Kubrick and Clarke over dinner about depicting aliens.' },
+    { s: 'minsky', t: 'kubrick', year: 1965, note: 'Consulted on the artificial intelligence of HAL 9000.' },
+    { s: 'sagan', t: 'asimov', year: 1965, approx: true, note: 'Friends; Asimov counted Sagan among the few people smarter than himself.' },
+    { s: 'asimov', t: 'clarke', year: 1970, approx: true, note: 'Friends who joked about a treaty dividing “best science writer” and “best SF writer”.' },
+  ];
+
+  // ── layout constants ──
+  const Y0 = 1440, Y1 = 2020;
+  const PX_PER_YEAR = 11;
+  const R = 14;               // portrait radius
+  const AXIS_W = 46;          // left axis column
+  const TOP = 30, BOTTOM = 40;
+
+  const byId = new Map(PEOPLE.map(p => [p.id, p]));
+  const COLOR = { a: 'var(--artist)', s: 'var(--scientist)', b: 'var(--both)' };
+  const ROLE = { a: 'Artist', s: 'Scientist', b: 'Artist & scientist' };
+
+  LINKS.forEach(l => { l.source = byId.get(l.s); l.target = byId.get(l.t); });
+  const neighbors = new Map(PEOPLE.map(p => [p.id, new Set([p.id])]));
+  LINKS.forEach(l => { neighbors.get(l.s).add(l.t); neighbors.get(l.t).add(l.s); });
+
+  const initials = n => n.replace(/\b(van|von|da|de|du|of|the)\b/gi, '').split(/[\s-]+/).filter(Boolean)
+    .map(w => w[0]).filter(c => /\p{Lu}/u.test(c)).slice(0, 2).join('');
+  const fmtYear = (y, approx) => (approx ? 'c. ' : '') + y;
+  const dates = p => `${fmtYear(p.born, p.bornApprox)} – ${fmtYear(p.died, p.diedApprox)} · lived ${p.died - p.born} years`;
+
+  const chart = document.getElementById('chart');
+  const tip = document.createElement('div');
+  tip.className = 'tip';
+  chart.appendChild(tip);
+
+  const y = d3.scaleLinear().domain([Y0, Y1]).range([TOP, TOP + (Y1 - Y0) * PX_PER_YEAR]);
+  const height = y(Y1) + BOTTOM;
+
+  // Horizontal placement: 1-D force layout where linked people attract and
+  // people whose lifetimes overlap in time repel so their lifelines never collide.
+  function layout(width) {
+    const x0 = AXIS_W + R + 6, x1 = width - R - 6;
+    // spacing adapts to the busiest moment in the timeline
+    const pad = (R * 2.4) / PX_PER_YEAR;
+    let peak = 0;
+    for (let yr = Y0; yr <= Y1; yr += 2) {
+      peak = Math.max(peak, PEOPLE.filter(p => p.born - pad < yr && yr < p.died).length);
+    }
+    const minGap = Math.min(48, (x1 - x0) / peak);
+    // deterministic start: spread by birth order in a zig-zag so neighbours in time start apart
+    const sorted = [...PEOPLE].sort((a, b) => a.born - b.born);
+    sorted.forEach((p, i) => {
+      const lanes = 7;
+      p.x = x0 + ((i * 3) % lanes + 0.5) / lanes * (x1 - x0);
+      p.vx = 0;
+      p.y = y(p.born); p.fy = p.y;
+    });
+
+    // pairs whose vertical extents (portrait + lifeline) overlap
+    const pairs = [];
+    for (let i = 0; i < PEOPLE.length; i++) for (let j = i + 1; j < PEOPLE.length; j++) {
+      const a = PEOPLE[i], b = PEOPLE[j];
+      if (a.born - pad < b.died && b.born - pad < a.died) pairs.push([a, b]);
+    }
+
+    function separate(alpha) {
+      for (const [a, b] of pairs) {
+        let dx = b.x - a.x;
+        const d = Math.abs(dx);
+        if (d < minGap) {
+          if (d < 1e-6) dx = a.born <= b.born ? 1 : -1;
+          const push = (minGap - d) / 2 * Math.min(1, alpha * 4 + 0.3);
+          const s = Math.sign(dx);
+          a.vx -= s * push; b.vx += s * push;
+        }
+      }
+    }
+    function bound() {
+      for (const p of PEOPLE) {
+        if (p.x < x0) { p.x = x0; p.vx = Math.abs(p.vx) * 0.2; }
+        if (p.x > x1) { p.x = x1; p.vx = -Math.abs(p.vx) * 0.2; }
+      }
+    }
+
+    const sim = d3.forceSimulation(PEOPLE)
+      .force('link', d3.forceLink(LINKS).distance(minGap * 1.2).strength(0.35))
+      .force('center', d3.forceX((x0 + x1) / 2).strength(0.004))
+      .force('sep', separate)
+      .force('bound', bound)
+      .velocityDecay(0.45)
+      .stop();
+    for (let i = 0; i < 500; i++) sim.tick();
+    // snap into lanes: people claim, in birth order, the free lane nearest their preferred x.
+    // A lane is free once its last occupant has died, so lifelines never touch; with
+    // lanes >= peak concurrency there is always one free.
+    const lanes = Math.max(peak + 2, Math.floor((x1 - x0) / 48) + 1);
+    const laneX = i => x0 + i * (x1 - x0) / (lanes - 1);
+    const laneEnd = new Array(lanes).fill(-Infinity);
+    const laneBorn = new Array(lanes).fill(-Infinity);
+    [...PEOPLE].sort((a, b) => a.born - b.born || a.x - b.x).forEach(p => {
+      let best = -1, bestCost = Infinity;
+      for (let i = 0; i < lanes; i++) {
+        if (laneEnd[i] > p.born - pad) continue;
+        let cost = Math.abs(laneX(i) - p.x);
+        // keep clear of people born just before in nearby lanes, leaving room for labels
+        for (let j = i - 3; j <= i + 3; j++) {
+          if (j !== i && j >= 0 && j < lanes && p.born - laneBorn[j] < 5) cost += Math.abs(j - i) === 1 ? 50 : 15;
+        }
+        if (cost < bestCost) { bestCost = cost; best = i; }
+      }
+      laneEnd[best] = p.died; laneBorn[best] = p.born;
+      p.x = laneX(best);
+    });
+  }
+
+  function linkPath(l) {
+    const yy = y(l.year);
+    const ax = l.source.x, bx = l.target.x;
+    const bow = Math.min(46, Math.abs(bx - ax) * 0.18 + 6);
+    return `M${ax},${yy} Q${(ax + bx) / 2},${yy - bow} ${bx},${yy}`;
+  }
+
+  let svg, photos = {};
+
+  function render() {
+    const width = chart.clientWidth;
+    layout(width);
+    chart.querySelector('svg')?.remove();
+
+    svg = d3.select(chart).insert('svg', ':first-child')
+      .attr('viewBox', `0 0 ${width} ${height}`)
+      .attr('height', height)
+      .attr('role', 'img')
+      .attr('aria-label', 'Timeline network of artists and scientists linked by friendships');
+
+    const defs = svg.append('defs');
+    defs.append('clipPath').attr('id', 'clip-portrait')
+      .attr('clipPathUnits', 'objectBoundingBox')
+      .append('circle').attr('cx', 0.5).attr('cy', 0.5).attr('r', 0.5);
+
+    // grid + axis
+    const years = d3.range(Math.ceil(Y0 / 10) * 10, Y1 + 1, 10);
+    const grid = svg.append('g').attr('class', 'grid');
+    const axis = svg.append('g').attr('class', 'axis');
+    years.forEach(yr => {
+      const cls = yr % 100 === 0 ? 'century' : '';
+      grid.append('g').attr('class', cls).append('line')
+        .attr('x1', AXIS_W).attr('x2', width).attr('y1', y(yr)).attr('y2', y(yr));
+      if (yr % 50 === 0 || yr % 100 === 0) {
+        axis.append('g').attr('class', cls).append('text')
+          .attr('x', 0).attr('y', y(yr)).attr('dy', '0.35em').text(yr);
+      } else {
+        axis.append('text').attr('x', 8).attr('y', y(yr)).attr('dy', '0.35em')
+          .attr('opacity', 0.55).attr('font-size', 10).text(yr);
+      }
+    });
+
+    // lifelines
+    svg.append('g').selectAll('line').data(PEOPLE).join('line')
+      .attr('class', 'lifeline')
+      .attr('x1', d => d.x).attr('x2', d => d.x)
+      .attr('y1', d => y(d.born) + R).attr('y2', d => y(d.died))
+      .attr('stroke', d => COLOR[d.type]);
+    svg.append('g').selectAll('circle').data(PEOPLE).join('circle')
+      .attr('class', 'lifeline')
+      .attr('cx', d => d.x).attr('cy', d => y(d.died)).attr('r', 3)
+      .attr('fill', d => COLOR[d.type]).attr('stroke', 'none');
+
+    // links
+    const linkG = svg.append('g');
+    linkG.selectAll('path.link').data(LINKS).join('path')
+      .attr('class', 'link').attr('d', linkPath)
+      .attr('stroke-dasharray', d => d.approx ? '4 3' : null);
+    linkG.selectAll('g.ends').data(LINKS).join('g').attr('class', 'ends')
+      .each(function (d) {
+        d3.select(this).selectAll('circle').data([d.source, d.target]).join('circle')
+          .attr('class', 'link-end').attr('r', 2.6)
+          .attr('cx', p => p.x).attr('cy', y(d.year));
+      });
+    linkG.selectAll('path.link-hit').data(LINKS).join('path')
+      .attr('class', 'link-hit').attr('d', linkPath)
+      .on('pointerenter', (e, d) => { if (e.pointerType === 'mouse') showLink(e, d); })
+      .on('pointermove', e => { if (e.pointerType === 'mouse') moveTip(e); })
+      .on('pointerleave', e => { if (e.pointerType === 'mouse') clearFocus(); })
+      .on('click', (e, d) => { e.stopPropagation(); showLink(e, d); });
+
+    // nodes
+    const node = svg.append('g').selectAll('g.node').data(PEOPLE).join('g')
+      .attr('class', 'node')
+      .attr('transform', d => `translate(${d.x},${y(d.born)})`)
+      .attr('tabindex', 0)
+      .attr('aria-label', d => `${d.name}, ${d.born} to ${d.died}`)
+      .on('pointerenter', (e, d) => { if (e.pointerType === 'mouse') showNode(e, d); })
+      .on('pointermove', e => { if (e.pointerType === 'mouse') moveTip(e); })
+      .on('pointerleave', e => { if (e.pointerType === 'mouse') clearFocus(); })
+      .on('focus', (e, d) => { if (e.target.matches(':focus-visible')) showNode(e, d); })
+      .on('blur', clearFocus)
+      .on('click', (e, d) => { e.stopPropagation(); showNode(e, d); });
+
+    node.append('circle').attr('class', 'ring').attr('r', R).attr('stroke', d => COLOR[d.type]);
+    node.append('text').attr('class', 'initials').text(d => initials(d.name));
+    node.append('image').attr('class', 'portrait')
+      .attr('x', -R + 2).attr('y', -R + 2).attr('width', 2 * R - 4).attr('height', 2 * R - 4)
+      .attr('clip-path', 'url(#clip-portrait)')
+      .attr('preserveAspectRatio', 'xMidYMin slice')
+      .attr('href', d => photos[d.id] || null);
+
+    // labels: try each side of the portrait (level, raised, lowered) and keep the
+    // spot that collides least with portraits, lifelines and labels already placed
+    const placed = [];
+    const labels = node.append('text').attr('class', 'label').attr('dy', '0.35em').text(d => d.name);
+    labels.each(function (d) { d.labelW = this.getComputedTextLength() * 1.05 + 2; });
+    const hit = (r, q) => r.a < q.b && r.b > q.a && r.t < q.u && r.u > q.t;
+    [...PEOPLE].sort((p, q) => p.born - q.born).forEach(d => {
+      const w = d.labelW, cy = y(d.born);
+      let best = null;
+      for (const side of [1, -1]) for (const dy of [0, -13, 13]) {
+        const lx = side > 0 ? d.x + R + 4 : d.x - R - 4 - w;
+        const r = { a: lx, b: lx + w, t: cy + dy - 8, u: cy + dy + 8 };
+        let c = (r.a < AXIS_W || r.b > width) ? 1000 : 0;
+        c += Math.abs(dy) * 0.4 + (side < 0 ? 0.5 : 0);
+        for (const o of PEOPLE) {
+          if (o === d) continue;
+          const oy = y(o.born);
+          if (hit(r, { a: o.x - R, b: o.x + R, t: oy - R, u: oy + R })) c += 100;
+          else if (o.x > r.a && o.x < r.b && oy + R < r.u && y(o.died) > r.t) c += 3;
+        }
+        for (const q of placed) if (hit(r, q)) c += 100;
+        if (!best || c < best.c) best = { c, side, dy, r };
+      }
+      d.labelSide = best.side; d.labelDy = best.dy;
+      d.labelHidden = best.c >= 100;
+      if (!d.labelHidden) placed.push(best.r);
+    });
+    labels
+      .classed('crowded', d => d.labelHidden)
+      .attr('x', d => d.labelSide * (R + 4))
+      .attr('y', d => d.labelDy)
+      .attr('text-anchor', d => d.labelSide > 0 ? 'start' : 'end');
+
+    svg.on('click', clearFocus);
+  }
+
+  function setFocus(nodeIds, linkSet) {
+    svg.classed('focus', true);
+    svg.selectAll('.node').classed('hl', d => nodeIds.has(d.id));
+    svg.selectAll('.lifeline').classed('hl', d => nodeIds.has(d.id));
+    svg.selectAll('.link').classed('hl', d => linkSet(d));
+    svg.selectAll('.ends').each(function (d) {
+      d3.select(this).selectAll('.link-end').classed('hl', linkSet(d));
+    });
+  }
+
+  function clearFocus() {
+    if (!svg) return;
+    svg.classed('focus', false);
+    svg.selectAll('.hl').classed('hl', false);
+    tip.classList.remove('show');
+  }
+
+  function showNode(e, p) {
+    setFocus(neighbors.get(p.id), l => l.s === p.id || l.t === p.id);
+    const img = photos[p.id]
+      ? `<img src="${photos[p.id]}" alt="">`
+      : `<div class="ph"></div>`;
+    tip.innerHTML = `
+      <div class="head">${img}
+        <div><div class="name">${p.name}</div>
+          <div class="role" style="color:${COLOR[p.type]}">${p.role}</div>
+          <div class="dates">${dates(p)}</div></div>
+      </div>
+      <div class="desc">${p.desc}</div>`;
+    placeTip(e, p.x, y(p.born));
+  }
+
+  function showLink(e, l) {
+    setFocus(new Set([l.s, l.t]), d => d === l);
+    tip.innerHTML = `
+      <div class="pair">${l.source.name} &amp; ${l.target.name}</div>
+      <div class="year">${fmtYear(l.year, l.approx)}</div>
+      <div class="desc">${l.note}</div>`;
+    placeTip(e, (l.source.x + l.target.x) / 2, y(l.year));
+  }
+
+  // position tooltip near the pointer (or the mark, for keyboard focus)
+  function placeTip(e, fx, fy) {
+    tip.classList.add('show');
+    if (e && e.clientX != null && e.type !== 'focus') moveTip(e);
+    else positionAt(fx, fy);
+  }
+
+  function moveTip(e) {
+    const rect = chart.getBoundingClientRect();
+    positionAt(e.clientX - rect.left, e.clientY - rect.top);
+  }
+
+  function positionAt(px, py) {
+    const w = tip.offsetWidth, h = tip.offsetHeight;
+    const sc = chart.parentElement, vl = sc.scrollLeft, vr = vl + sc.clientWidth;
+    let left = px + 18;
+    if (left + w > vr) left = px - w - 18;
+    left = Math.max(vl, Math.min(vr - w, left));
+    // keep inside the visible viewport vertically
+    const rect = chart.getBoundingClientRect();
+    const viewTop = -rect.top + 60, viewBottom = -rect.top + window.innerHeight - 10;
+    let top = py - h / 2;
+    top = Math.max(viewTop, Math.min(viewBottom - h, top));
+    tip.style.left = left + 'px';
+    tip.style.top = top + 'px';
+  }
+
+  // ── portraits from Wikipedia (lead images), batched 50 titles per request ──
+  async function loadPhotos() {
+    const titles = PEOPLE.map(p => p.wiki);
+    const byTitle = new Map(PEOPLE.map(p => [p.wiki.replace(/_/g, ' '), p]));
+    for (let i = 0; i < titles.length; i += 50) {
+      const batch = titles.slice(i, i + 50);
+      const url = 'https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&redirects=1' +
+        '&prop=pageimages&piprop=thumbnail&pithumbsize=160&pilicense=any&titles=' +
+        encodeURIComponent(batch.join('|'));
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        const alias = new Map();
+        (data.query.normalized || []).forEach(n => alias.set(n.to, n.from));
+        (data.query.redirects || []).forEach(r => alias.set(r.to, alias.get(r.from) || r.from));
+        Object.values(data.query.pages || {}).forEach(pg => {
+          if (!pg.thumbnail) return;
+          const orig = alias.get(pg.title) || pg.title;
+          const p = byTitle.get(orig.replace(/_/g, ' ')) || byTitle.get(pg.title);
+          if (p) photos[p.id] = pg.thumbnail.source;
+        });
+      } catch (err) {
+        console.warn('Could not load portraits', err);
+      }
+    }
+    if (svg) svg.selectAll('image.portrait').attr('href', d => photos[d.id] || null);
+  }
+
+  render();
+  loadPhotos();
+  if (document.fonts) document.fonts.ready.then(() => { clearFocus(); render(); });
+
+  let lastW = chart.clientWidth, t;
+  window.addEventListener('resize', () => {
+    clearTimeout(t);
+    t = setTimeout(() => {
+      if (chart.clientWidth !== lastW) { lastW = chart.clientWidth; clearFocus(); render(); }
+    }, 150);
+  });
+  </script>
+</body>
+</html>
